@@ -1,6 +1,13 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from 'react';
-import * as mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+// Import mapboxgl dynamically to avoid SSR issues
+let mapboxgl: any;
+if (typeof window !== 'undefined') {
+  mapboxgl = require('mapbox-gl');
+}
 
 // Mapbox token handling
 // For local development, you can add NEXT_PUBLIC_MAPBOX_TOKEN to your .env.local file
@@ -40,15 +47,15 @@ const MapComponent: React.FC<MapComponentProps> = ({
   transitionDuration = 1500
 }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const marker = useRef<mapboxgl.Marker | null>(null);
+  const map = useRef<any>(null);
+  const marker = useRef<any>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Initialize map when component mounts
   useEffect(() => {
-    if (!mapContainer.current) return;
-
-    (mapboxgl as any).accessToken = MAPBOX_TOKEN;
+    if (!mapContainer.current || !mapboxgl) return;
+    
+    mapboxgl.accessToken = MAPBOX_TOKEN;
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -58,7 +65,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
       attributionControl: false
     });
 
-    map.current.on('load', () => {
+    map.current?.on('load', () => {
       setMapLoaded(true);
       
       // Add a red overlay to match your theme
