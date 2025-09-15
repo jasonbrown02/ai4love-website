@@ -29,6 +29,34 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Interactive Map Setup
+
+This website uses Mapbox for the interactive map functionality. To set up the map:
+
+1. Create a free account at [Mapbox](https://account.mapbox.com/)
+2. Generate an access token in your Mapbox account with these scopes:
+   - Required: `STYLES:TILES`, `STYLES:READ`, `VISION:READ`
+   - Optional: `MAP:READ`, `DATASETS:READ` (if using geocoding or custom data)
+3. Add URL restrictions to your token for security:
+   - Production domain: `https://ai4love-website.netlify.app` (or your domain)
+   - Development domains: `http://localhost:3000`, `http://localhost:3001`, `http://localhost:3002`
+4. Add the token to your environment:
+
+### Local Development
+
+Create a `.env.local` file in the root directory and add:
+
+```
+NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token_here
+```
+
+### Production Deployment
+
+Add the environment variable `NEXT_PUBLIC_MAPBOX_TOKEN` to your hosting platform:
+
+- **Netlify**: Go to Site settings > Build & deploy > Environment > Environment variables
+- **Vercel**: Go to Project settings > Environment Variables
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
