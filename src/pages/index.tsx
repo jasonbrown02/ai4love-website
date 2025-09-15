@@ -148,17 +148,23 @@ export default function Home() {
 
   return (
     <HomeLayout title={title} description={description} canonicalUrl="https://ai4love.com">
-      {/* Interactive Map Background */}
-      <div className="absolute inset-0 z-0">
-        <MapComponent 
-          center={location} 
-          zoom={submitted ? 12 : 10}
-          markerTitle={submitted ? orgName : 'AI4Love Headquarters'}
-          transitionDuration={1500}
-        />
+      {/* Interactive Map Background - Full height and width container */}
+      <div 
+        className="absolute inset-0 z-0 overflow-hidden" 
+        style={{ height: '100vh', width: '100vw', position: 'fixed' }}
+      >
+        {/* Map Component with explicit dimensions */}
+        <div style={{ height: '100%', width: '100%', position: 'absolute' }}>
+          <MapComponent 
+            center={location} 
+            zoom={submitted ? 12 : 10}
+            markerTitle={submitted ? orgName : 'AI4Love Headquarters'}
+            transitionDuration={1500}
+          />
+        </div>
         
         {/* Semi-transparent overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-black bg-opacity-30 z-10"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
         
         {/* Animation overlay */}
         {animating && (

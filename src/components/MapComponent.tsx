@@ -1,28 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import 'mapbox-gl/dist/mapbox-gl.css';
-
-// Import mapboxgl dynamically to avoid SSR issues
-let mapboxgl: any;
-if (typeof window !== 'undefined') {
-  mapboxgl = require('mapbox-gl');
-}
-
-// Mapbox token handling
-// For local development, you can add NEXT_PUBLIC_MAPBOX_TOKEN to your .env.local file
-// For production, add this environment variable in your hosting platform (Netlify/Vercel)
-// 
-// IMPORTANT: When creating your Mapbox token, ensure it has these scopes:
-// - STYLES:TILES, STYLES:READ, VISION:READ (required)
-// - MAP:READ, DATASETS:READ (optional, if using geocoding or custom data)
-//
-// For security, add URL restrictions to your token in the Mapbox dashboard:
-// - Add your production domain (e.g., https://ai4love-website.netlify.app)
-// - Add your development domains (e.g., http://localhost:3000, http://localhost:3001)
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 
-  // Fallback token for development - replace with your own or use .env.local
-  'pk.eyJ1IjoiYWk0bG92ZSIsImEiOiJjbHVtYXBib3giLCJhIjoiY2xhc3NpYyJ9.dGVtcF9tYXBib3hfdG9rZW4=';
 
 // Burlington, Ontario coordinates
 const BURLINGTON_COORDS = {
@@ -53,24 +31,46 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
   // Initialize map when component mounts
   useEffect(() => {
-    if (!mapContainer.current || !mapboxgl) return;
+    // Handle CSS manually to avoid import errors
+    if (typeof document !== 'undefined') {
+      // Add Mapbox CSS to head
+      const linkElement = document.createElement('link');
+      linkElement.rel = 'stylesheet';
+      linkElement.href = 'https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css';
+      document.head.appendChild(linkElement);
+    }
     
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11', // Dark style to match your red theme
-      center: [center.lng, center.lat],
-      zoom: zoom,
-      attributionControl: false
-    });
-
-    map.current?.on('load', () => {
-      setMapLoaded(true);
+    const initializeMap = async () => {
+      if (!mapContainer.current) return;
       
-      // Add a red overlay to match your theme
-      if (map.current) {
-        map.current.addLayer({
+      // Dynamically import mapbox-gl
+      const mapboxgl = await import('mapbox-gl');
+      
+      // Get token from environment variable or use fallback
+      const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 
+        'pk.eyJ1IjoiYWk0bG92ZSIsImEiOiJjbHVtYXBib3giLCJhIjoiY2xhc3NpYyJ9.dGVtcF9tYXBib3hfdG9rZW4=';
+      
+      // Set access token
+      mapboxgl.default.accessToken = MAPBOX_TOKEN;
+      
+      // Create map instance
+      const mapInstance = new mapboxgl.default.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/dark-v11', // Dark style to match your theme
+        center: [center.lng, center.lat],
+        zoom: zoom,
+        attributionControl: false
+      });
+      
+      // Store map instance in ref
+      map.current = mapInstance;
+      
+      // Set up map load handler
+      mapInstance.on('load', () => {
+        setMapLoaded(true);
+        
+        // Add a red overlay to match your theme
+        mapInstance.addLayer({
           id: 'red-overlay',
           type: 'fill',
           source: {
@@ -97,27 +97,34 @@ const MapComponent: React.FC<MapComponentProps> = ({
             'fill-opacity': 0.3
           }
         });
-      }
-    });
-
-    // Add marker
-    marker.current = new mapboxgl.Marker({ color: '#ffffff' })
-      .setLngLat([center.lng, center.lat])
-      .addTo(map.current);
-
-    // Add popup with title
-    new mapboxgl.Popup({ closeOnClick: false })
-      .setLngLat([center.lng, center.lat])
-      .setHTML(`<h3 class="text-sm font-bold">${markerTitle}</h3>`)
-      .addTo(map.current);
-
+      });
+      
+      // Add marker
+      const markerInstance = new mapboxgl.default.Marker({ color: '#ffffff' })
+        .setLngLat([center.lng, center.lat])
+        .addTo(mapInstance);
+      
+      // Store marker instance in ref
+      marker.current = markerInstance;
+      
+      // Add popup with title
+      new mapboxgl.default.Popup({ closeOnClick: false })
+        .setLngLat([center.lng, center.lat])
+        .setHTML(`<h3 class="text-sm font-bold">${markerTitle}</h3>`)
+        .addTo(mapInstance);
+    };
+    
+    // Initialize the map
+    initializeMap();
+    
+    // Cleanup function
     return () => {
       if (map.current) {
         map.current.remove();
         map.current = null;
       }
     };
-  }, []);
+  }, []); // Empty dependency array to run only once on mount
 
   // Update map when center changes
   useEffect(() => {
@@ -131,24 +138,37 @@ const MapComponent: React.FC<MapComponentProps> = ({
       essential: true
     });
 
-    // Update marker position
+    // Update marker position if it exists
     if (marker.current) {
       marker.current.setLngLat([center.lng, center.lat]);
     }
 
-    // Update popup
-    new mapboxgl.Popup({ closeOnClick: false })
-      .setLngLat([center.lng, center.lat])
-      .setHTML(`<h3 class="text-sm font-bold">${markerTitle}</h3>`)
-      .addTo(map.current);
+    // Update popup with new information
+    const updatePopup = async () => {
+      const mapboxgl = await import('mapbox-gl');
+      new mapboxgl.default.Popup({ closeOnClick: false })
+        .setLngLat([center.lng, center.lat])
+        .setHTML(`<h3 class="text-sm font-bold">${markerTitle}</h3>`)
+        .addTo(map.current);
+    };
     
+    updatePopup();
   }, [center, zoom, markerTitle, mapLoaded]);
 
   return (
     <div 
       ref={mapContainer} 
-      className="w-full h-full absolute inset-0"
-      style={{ background: '#111' }} // Dark background while loading
+      className="w-full h-full absolute inset-0 z-0"
+      style={{ 
+        background: '#6B3535', // Dark brown background while loading
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        width: '100%',
+        height: '100%'
+      }}
     />
   );
 };
