@@ -142,6 +142,12 @@ export default function Home() {
     // Reset error state
     setError('')
     
+    // Check if Supabase is available
+    if (!supabase) {
+      setError('Database connection not available. Please try again later.')
+      return
+    }
+    
     // Validate format before submitting
     if (!isValidRegistrationFormat(registrationNumber)) {
       setError('Please enter a charity registration number')
