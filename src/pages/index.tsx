@@ -15,6 +15,9 @@ export default function Home() {
 
   // Heart animation effect
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     const initTimer = setTimeout(() => {
       const maxHearts = 8;
       const hearts: Array<{ x: number; y: number; el: HTMLElement }> = [];
@@ -47,7 +50,7 @@ export default function Home() {
         hearts.push({ x, y, el: div });
         
         // Check if this heart is visible on screen
-        const isVisible = x >= 0 && x <= window.innerWidth && y >= 0 && y <= window.innerHeight;
+        const isVisible = typeof window !== 'undefined' && x >= 0 && x <= window.innerWidth && y >= 0 && y <= window.innerHeight;
         if (isVisible) {
           visibleHeartCount++;
           // Add "(you)" label to the randomly selected visible heart number
@@ -97,7 +100,7 @@ export default function Home() {
       }
 
       function spawnHeart() {
-        if (hearts.length >= maxHearts) return;
+        if (hearts.length >= maxHearts || typeof window === 'undefined') return;
         
         // Create hearts with better distribution
         const x = Math.random() * window.innerWidth;
