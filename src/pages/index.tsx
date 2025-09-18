@@ -1,102 +1,251 @@
 import { useState, useCallback, useEffect } from 'react'
 import HomeLayout from '@/components/HomeLayout'
-import MapComponent from '@/components/MapComponent'
+import { supabase } from '@/lib/supabase'
 
-// CRA API URL for charity lookup
-const CRA_API_URL = 'https://apps.cra-arc.gc.ca/ebci/hacc/srch/pub/dsplyRprtngPrd'
-
-// Define types for our charitable organizations database
-type CharityInfo = {
-  name: string;
-  lat: number;
-  lng: number;
-}
-
-type CharityDatabase = {
-  [key: string]: CharityInfo;
-}
-
-// Burlington, Ontario coordinates (AI4Love headquarters)
-const BURLINGTON_COORDS = {
-  lat: 43.3255,
-  lng: -79.7990
-}
-
-// Mock database of charitable organizations with their registration numbers and locations
-const charitableOrgs: CharityDatabase = {
-  // Real Canadian charity registration numbers with their names and approximate locations
-  '118925593RR0001': { name: 'Terry Fox Foundation', lat: 43.6532, lng: -79.3832 }, // Toronto
-  '107761694RR0001': { name: 'Heart and Stroke Foundation of Canada', lat: 45.5017, lng: -73.5673 }, // Montreal
-  '118829803RR0001': { name: 'Canadian Cancer Society', lat: 49.2827, lng: -123.1207 }, // Vancouver
-  '119218923RR0001': { name: 'United Way of Greater Toronto', lat: 43.6532, lng: -79.3832 }, // Toronto
-  '119219814RR0001': { name: 'Canadian Red Cross Society', lat: 45.4215, lng: -75.6972 }, // Ottawa
-  '108160995RR0001': { name: 'SickKids Foundation', lat: 43.6571, lng: -79.3878 }, // Toronto
-  '119110484RR0001': { name: 'World Vision Canada', lat: 43.8561, lng: -79.3370 }, // Markham
-  '130650757RR0001': { name: 'Doctors Without Borders Canada', lat: 43.6481, lng: -79.4042 }, // Toronto
-  '106863038RR0001': { name: 'Nature Conservancy of Canada', lat: 43.6481, lng: -79.3780 }, // Toronto
-  '118834852RR0001': { name: 'Salvation Army Canada', lat: 43.7184, lng: -79.3780 } // Toronto
-}
-
-type Location = {
-  lat: number
-  lng: number
-}
 
 export default function Home() {
   const title = "AI4Love - Relationship Intelligence for Nonprofits"
   const description = "AI-powered relationship intelligence platform for nonprofits. Transform supporter data into actionable insights without replacing existing systems."
   
   const [registrationNumber, setRegistrationNumber] = useState('')
-  const [location, setLocation] = useState<Location>(BURLINGTON_COORDS)
   const [submitted, setSubmitted] = useState(false)
   const [orgName, setOrgName] = useState('')
   const [error, setError] = useState('')
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [animating, setAnimating] = useState(false)
+
+  // Heart animation effect
+  useEffect(() => {
+    const initTimer = setTimeout(() => {
+      const maxHearts = 8;
+      const hearts: Array<{ x: number; y: number; el: HTMLElement }> = [];
+      let visibleHeartCount = 0;
+      const svg = document.getElementById('connections');
+      const animationContainer = document.getElementById('animation-container');
+      
+      if (!svg || !animationContainer) return;
+
+      // Bottom heart position (from HomeLayout)
+      const bottomHeartX = window.innerWidth / 2;
+      const bottomHeartY = window.innerHeight - 48;
+
+      function createHeart(x: number, y: number) {
+        if (!animationContainer) return;
+        const div = document.createElement('div');
+        div.classList.add('heart');
+        div.style.left = `${x}px`;
+        div.style.top = `${y}px`;
+        div.innerHTML = `
+          <svg viewBox="0 0 24 24" width="25" height="25" fill="white" opacity="0.5">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>`;
+        animationContainer.appendChild(div);
+        hearts.push({ x, y, el: div });
+        
+        // Check if this heart is visible on screen
+        const isVisible = x >= 0 && x <= window.innerWidth && y >= 0 && y <= window.innerHeight;
+        if (isVisible) {
+          visibleHeartCount++;
+          // Add "(you)" label to the 3rd visible heart
+          if (visibleHeartCount === 3) {
+            const label = document.createElement('div');
+            label.style.position = 'absolute';
+            label.style.left = `${x}px`;
+            label.style.top = `${y + 30}px`;
+            label.style.transform = 'translate(-50%, 0)';
+            label.style.color = 'rgba(255,255,255,0.7)';
+            label.style.fontSize = '12px';
+            label.style.fontFamily = 'Poppins, sans-serif';
+            label.style.pointerEvents = 'none';
+            label.style.zIndex = '2';
+            label.textContent = '(you)';
+            animationContainer.appendChild(label);
+          }
+        }
+        
+        drawConnections();
+      }
+
+      function drawConnections() {
+        if (!svg) return;
+        svg.innerHTML = '';
+        
+        // Draw connections between hearts (simplified)
+        for (let i = 0; i < hearts.length; i++) {
+          for (let j = i + 1; j < hearts.length; j++) {
+            const dx = hearts[j].x - hearts[i].x;
+            const dy = hearts[j].y - hearts[i].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > 30 && distance < 300) { // Only draw reasonable connections
+              const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+              line.setAttribute("x1", hearts[i].x.toString());
+              line.setAttribute("y1", hearts[i].y.toString());
+              line.setAttribute("x2", hearts[j].x.toString());
+              line.setAttribute("y2", hearts[j].y.toString());
+              line.setAttribute("stroke", "rgba(255,255,255,0.15)");
+              line.setAttribute("stroke-width", "1");
+              svg.appendChild(line);
+            }
+          }
+        }
+      }
+
+      function spawnHeart() {
+        if (hearts.length >= maxHearts) return;
+        
+        // Create hearts with better distribution
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        
+        createHeart(x, y);
+      }
+
+      // Start animation with better timing
+      spawnHeart();
+      let count = 1;
+      const interval = setInterval(() => {
+        if (count >= maxHearts) {
+          clearInterval(interval);
+        } else {
+          spawnHeart();
+          count++;
+        }
+      }, 5000);
+
+      // Cleanup function for the animation
+      return () => {
+        clearInterval(interval);
+        hearts.forEach(heart => {
+          if (heart.el && heart.el.parentNode) {
+            heart.el.parentNode.removeChild(heart.el);
+          }
+        });
+      };
+    }, 100);
+    
+    // Cleanup function for the useEffect
+    return () => {
+      clearTimeout(initTimer);
+    };
+  }, [])
 
   const handleSubmit = useCallback(async () => {
     // Reset error state
     setError('')
+    
+    // Validate format before submitting
+    if (!isValidRegistrationFormat(registrationNumber)) {
+      setError('Please enter a charity registration number')
+      return
+    }
+    
     setIsTransitioning(true)
     
     try {
-      // Format the registration number to match CRA format (e.g., 123456789RR0001)
+      // Format the registration number to match your database format
       const formattedNumber = formatRegistrationNumber(registrationNumber)
+      console.log('Searching for formatted number:', formattedNumber)
       
-      // In a production environment, you would make an API call to the CRA
-      // Since we can't directly query the CRA API from the client side due to CORS,
-      // you would typically use a serverless function or backend API
+      // Test Supabase connection first
+      const { data: testData, error: testError } = await supabase
+        .from('NonProfitNumber')
+        .select('*', { count: 'exact' })
+        .limit(1)
       
-      // Check if the registration number exists in our mock database
-      const org = charitableOrgs[formattedNumber]
+      if (testError) {
+        console.error('Supabase connection test failed:', testError)
+        throw new Error(`Database connection failed: ${testError.message}`)
+      }
       
-      if (org) {
-        // We found the organization in our database
-        setLocation({
-          lat: org.lat,
-          lng: org.lng
-        })
+      console.log('Supabase connection test successful')
+      
+      // Query the database for the nonprofit organization
+      // Try different possible column names for the business number
+      let data, error;
+      
+      // First, let's get a sample record to see the column structure
+      const { data: sampleData } = await supabase
+        .from('NonProfitNumber')
+        .select('*')
+        .limit(1)
+      
+      if (sampleData && sampleData.length > 0) {
+        const columns = Object.keys(sampleData[0])
+        console.log('Available columns:', columns)
         
-        // Set the organization name from our database
-        setOrgName(org.name)
+        // Try to find the right column name for business number
+        const possibleColumns = ['BN', 'bn', 'business_number', 'registration_number', 'charity_number', 'number', 'id']
+        const matchingColumn = possibleColumns.find(col => columns.includes(col))
         
-        // Show the welcome screen after a delay
-        setTimeout(() => {
-          setSubmitted(true)
-          setIsTransitioning(false)
-        }, 1500)
-      } else if (isValidRegistrationFormat(formattedNumber)) {
-        // If it's a valid format but not in our database, we'll accept it as a generic organization
-        // In a real implementation, this would be an API call to validate against the CRA database
+        if (matchingColumn) {
+          console.log(`Using column: ${matchingColumn}`)
+          const result = await supabase
+            .from('NonProfitNumber')
+            .select('*')
+            .ilike(matchingColumn, formattedNumber)
+            .limit(1)
+          data = result.data
+          error = result.error
+        } else {
+          throw new Error(`No suitable column found. Available columns: ${columns.join(', ')}`)
+        }
+      } else {
+        // Table appears empty with our limit(1) query, but let's try a broader search
+        console.log('No sample data with limit(1), trying broader search...')
         
-        // Use a default location for Toronto
-        setLocation({
-          lat: 43.6532,
-          lng: -79.3832
-        })
+        // Try to get any records without limit to see if data exists
+        console.log('Attempting broader search with limit 10...')
+        const { data: allData, error: allError, count: allCount } = await supabase
+          .from('NonProfitNumber')
+          .select('*', { count: 'exact' })
+          .limit(10)
         
-        // Use a generic name based on the registration number
-        setOrgName(`Organization ${formattedNumber.substring(0, 6)}`)
+        console.log('Broader search result:', { allData, allError, allCount })
+        
+        if (allError) {
+          console.error('Error in broader search:', allError)
+          throw new Error(`Error accessing table: ${allError.message} (Code: ${allError.code})`)
+        }
+        
+        if (allData && allData.length > 0) {
+          console.log('Found data in broader search:', allData)
+          const columns = Object.keys(allData[0])
+          console.log('Available columns:', columns)
+          
+          // Try to find the right column name for business number
+          const possibleColumns = ['BN', 'bn', 'business_number', 'registration_number', 'charity_number', 'number', 'id', 'Business_Number']
+          const matchingColumn = possibleColumns.find(col => columns.includes(col))
+          
+          if (matchingColumn) {
+            console.log(`Using column: ${matchingColumn}`)
+            const result = await supabase
+              .from('NonProfitNumber')
+              .select('*')
+              .ilike(matchingColumn, formattedNumber)
+              .limit(1)
+            data = result.data
+            error = result.error
+          } else {
+            throw new Error(`No suitable column found for business number. Available columns: ${columns.join(', ')}. Please check which column contains the charity registration numbers.`)
+          }
+        } else {
+          console.log('No data found in broader search. Total count:', allCount)
+          throw new Error(`Table appears to be empty. Total records: ${allCount}. This could be due to Row Level Security (RLS) policies blocking access, or the table truly being empty. Please check your Supabase RLS settings.`)
+        }
+      }
+      
+      console.log('Query result:', { data, error })
+      
+      if (error) {
+        console.error('Supabase query error:', error)
+        throw new Error(`Database query failed: ${error.message}`)
+      }
+      
+      if (data && data.length > 0) {
+        // We found the organization in the database
+        const org = data[0]
+        console.log('Found organization:', org)
+        setOrgName(org.Name || org.name || org.text || org.organization_name || `Organization ${formattedNumber}`)
         
         // Show the welcome screen after a delay
         setTimeout(() => {
@@ -104,39 +253,39 @@ export default function Home() {
           setIsTransitioning(false)
         }, 1500)
       } else {
+        // Organization not found in database
         setIsTransitioning(false)
-        setError('Invalid charitable organization number format. Please enter a valid Canadian charity registration number (e.g., 118925593RR0001)')
+        setError('Nonprofit number not found. Please check the number and try again.')
       }
-    } catch (err) {
-      console.error('Error validating charitable organization:', err)
+    } catch (err: any) {
+      console.error('Error validating nonprofit organization:', err)
       setIsTransitioning(false)
-      setError('Error validating charitable organization. Please try again.')
+      setError(err.message || 'Error validating nonprofit organization. Please try again.')
     }
   }, [registrationNumber])
 
-  // Effect to handle animation when location changes
-  useEffect(() => {
-    if (submitted) {
-      setAnimating(true)
-      const timer = setTimeout(() => {
-        setAnimating(false)
-      }, 1500)
-      return () => clearTimeout(timer)
-    }
-  }, [location, submitted])
 
-  // Format registration number to CRA format
+  // Format registration number to match database format
   const formatRegistrationNumber = (number: string) => {
-    // Remove all non-alphanumeric characters
+    // Remove all non-alphanumeric characters first
     const cleaned = number.replace(/[^a-zA-Z0-9]/g, '')
-    return cleaned.toUpperCase()
+    
+    // If it has RR in it (Canadian format), extract just the number part before RR
+    if (cleaned.includes('RR')) {
+      const beforeRR = cleaned.split('RR')[0]
+      return beforeRR
+    }
+    
+    // Otherwise return the cleaned number
+    return cleaned
   }
   
   // Validate registration number format
   const isValidRegistrationFormat = (number: string) => {
-    // Canadian charity registration numbers are typically in the format: 123456789RR0001
-    // For this example, we'll accept any number that's at least 9 characters
-    return number.length >= 9
+    // Very flexible validation - just check that something was entered
+    // With 1M+ entries, we don't know all possible formats
+    const trimmed = number.trim()
+    return trimmed.length > 0
   }
   
   // Handle Enter key press
@@ -148,63 +297,50 @@ export default function Home() {
 
   return (
     <HomeLayout title={title} description={description} canonicalUrl="https://ai4love.com">
-      {/* Interactive Map Background - Full height and width container */}
-      <div 
-        className="absolute inset-0 z-0 overflow-hidden" 
-        style={{ height: '100vh', width: '100vw', position: 'fixed' }}
-      >
-        {/* Map Component with explicit dimensions */}
-        <div style={{ height: '100%', width: '100%', position: 'absolute' }}>
-          <MapComponent 
-            center={location} 
-            zoom={submitted ? 12 : 10}
-            markerTitle={submitted ? orgName : 'AI4Love Headquarters'}
-            transitionDuration={1500}
-          />
+      {/* Red background with heart animation */}
+      <div className="fixed inset-0 bg-red-600" style={{ backgroundColor: '#C8102E' }}>
+        {/* Animation container */}
+        <div id="animation-container" className="absolute inset-0">
+          <svg id="connections" className="absolute inset-0 w-full h-full pointer-events-none z-0"></svg>
         </div>
-        
-        {/* Semi-transparent overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
-        
-        {/* Animation overlay */}
-        {animating && (
-          <div 
-            className="absolute inset-0 bg-white z-20" 
-            style={{
-              opacity: 0,
-              animation: 'flash 1.5s ease-out'
-            }}
-          ></div>
-        )}
-        
-        {/* Add keyframe animations to the global styles */}
-        <style jsx global>{`
-          @keyframes flash {
-            0% { opacity: 0.8; }
-            100% { opacity: 0; }
-          }
-        `}</style>
       </div>
+      
+      <style jsx global>{`
+        body {
+          margin: 0;
+          overflow: hidden;
+        }
+        .heart {
+          position: absolute;
+          width: 25px;
+          height: 25px;
+          transform: translate(-50%, -50%);
+          opacity: 0.5;
+          animation: pulse 4s infinite;
+          z-index: 1;
+          pointer-events: none;
+        }
+        @keyframes pulse {
+          0%, 100% { transform: translate(-50%, -50%) scale(1); }
+          50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+      `}</style>
 
       {/* Content */}
       <div className="relative z-20 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-xl px-6">
           {!submitted ? (
             <div className="text-white">
-              <h1 className="text-4xl md:text-5xl font-bold mb-8 font-poppins">
-                Enter your<br />
-charitable<br />
-registration<br />
-number
+              <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 font-poppins">
+                We're glad we found you.
               </h1>
-              
               <div className="flex mt-6">
                 <input
                   type="text"
                   value={registrationNumber}
                   onChange={(e) => setRegistrationNumber(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Enter charity number (e.g. 118925593RR0001)"
+                  placeholder="Enter charity/nonprofit registration number"
                   className="flex-grow px-6 py-4 rounded-l-full text-gray-800 font-poppins focus:outline-none"
                   disabled={isTransitioning}
                 />
