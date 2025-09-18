@@ -19,10 +19,15 @@ export default function Home() {
       const maxHearts = 8;
       const hearts: Array<{ x: number; y: number; el: HTMLElement }> = [];
       let visibleHeartCount = 0;
+      let youLabelShown = false; // Flag to ensure "(you)" only appears once
       const svg = document.getElementById('connections');
       const animationContainer = document.getElementById('animation-container');
       
       if (!svg || !animationContainer) return;
+
+      // Random heart number to show "(you)" on - could be 3rd, 5th, 7th, or 10th
+      const possibleHeartNumbers = [3, 5, 7, 10];
+      const randomHeartNumber = possibleHeartNumbers[Math.floor(Math.random() * possibleHeartNumbers.length)];
 
       // Bottom heart position (from HomeLayout)
       const bottomHeartX = window.innerWidth / 2;
@@ -45,8 +50,8 @@ export default function Home() {
         const isVisible = x >= 0 && x <= window.innerWidth && y >= 0 && y <= window.innerHeight;
         if (isVisible) {
           visibleHeartCount++;
-          // Add "(you)" label to the 3rd visible heart
-          if (visibleHeartCount === 3) {
+          // Add "(you)" label to the randomly selected visible heart number
+          if (!youLabelShown && visibleHeartCount === randomHeartNumber) {
             const label = document.createElement('div');
             label.style.position = 'absolute';
             label.style.left = `${x}px`;
@@ -59,6 +64,7 @@ export default function Home() {
             label.style.zIndex = '2';
             label.textContent = '(you)';
             animationContainer.appendChild(label);
+            youLabelShown = true;
           }
         }
         
