@@ -225,13 +225,45 @@ export default function Home() {
         
         if (matchingColumn) {
           console.log(`Using column: ${matchingColumn}`)
-          const result = await supabase
-            .from('NonProfitNumber')
-            .select('*')
-            .ilike(matchingColumn, formattedNumber)
-            .limit(1)
-          data = result.data
-          error = result.error
+          
+          // Try multiple search patterns for the formatted number
+          const searchPatterns = [
+            formattedNumber, // Full number as entered: 118829803RR0001
+            formattedNumber.replace('RR', ''), // Without RR: 118829803001  
+            formattedNumber.split('RR')[0], // Just business number: 118829803
+            `%${formattedNumber}%`, // Wildcard search
+            `%${formattedNumber.split('RR')[0]}%` // Wildcard search for business number
+          ]
+          
+          console.log('Trying search patterns:', searchPatterns)
+          
+          // Try each pattern until we find a match
+          for (const pattern of searchPatterns) {
+            console.log(`Searching with pattern: ${pattern}`)
+            const result = await supabase
+              .from('NonProfitNumber')
+              .select('*')
+              .ilike(matchingColumn, pattern)
+              .limit(1)
+            
+            if (result.data && result.data.length > 0) {
+              console.log(`Found match with pattern: ${pattern}`)
+              data = result.data
+              error = result.error
+              break
+            }
+          }
+          
+          // If no patterns worked, use the original query for error handling
+          if (!data || data.length === 0) {
+            const result = await supabase
+              .from('NonProfitNumber')
+              .select('*')
+              .ilike(matchingColumn, formattedNumber)
+              .limit(1)
+            data = result.data
+            error = result.error
+          }
         } else {
           throw new Error(`No suitable column found. Available columns: ${columns.join(', ')}`)
         }
@@ -264,13 +296,45 @@ export default function Home() {
           
           if (matchingColumn) {
             console.log(`Using column: ${matchingColumn}`)
-            const result = await supabase
-              .from('NonProfitNumber')
-              .select('*')
-              .ilike(matchingColumn, formattedNumber)
-              .limit(1)
-            data = result.data
-            error = result.error
+            
+            // Try multiple search patterns for the formatted number
+            const searchPatterns = [
+              formattedNumber, // Full number as entered: 118829803RR0001
+              formattedNumber.replace('RR', ''), // Without RR: 118829803001  
+              formattedNumber.split('RR')[0], // Just business number: 118829803
+              `%${formattedNumber}%`, // Wildcard search
+              `%${formattedNumber.split('RR')[0]}%` // Wildcard search for business number
+            ]
+            
+            console.log('Trying search patterns:', searchPatterns)
+            
+            // Try each pattern until we find a match
+            for (const pattern of searchPatterns) {
+              console.log(`Searching with pattern: ${pattern}`)
+              const result = await supabase
+                .from('NonProfitNumber')
+                .select('*')
+                .ilike(matchingColumn, pattern)
+                .limit(1)
+              
+              if (result.data && result.data.length > 0) {
+                console.log(`Found match with pattern: ${pattern}`)
+                data = result.data
+                error = result.error
+                break
+              }
+            }
+            
+            // If no patterns worked, use the original query for error handling
+            if (!data || data.length === 0) {
+              const result = await supabase
+                .from('NonProfitNumber')
+                .select('*')
+                .ilike(matchingColumn, formattedNumber)
+                .limit(1)
+              data = result.data
+              error = result.error
+            }
           } else {
             throw new Error(`No suitable column found for business number. Available columns: ${columns.join(', ')}. Please check which column contains the charity registration numbers.`)
           }
@@ -314,15 +378,10 @@ export default function Home() {
   // Format registration number to match database format
   const formatRegistrationNumber = (number: string) => {
     // Remove all non-alphanumeric characters first
-    const cleaned = number.replace(/[^a-zA-Z0-9]/g, '')
+    const cleaned = number.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
     
-    // If it has RR in it (Canadian format), extract just the number part before RR
-    if (cleaned.includes('RR')) {
-      const beforeRR = cleaned.split('RR')[0]
-      return beforeRR
-    }
-    
-    // Otherwise return the cleaned number
+    // For Canadian charity registration numbers (format: 123456789RR0001)
+    // Keep the full number as the database likely stores it complete
     return cleaned
   }
   
