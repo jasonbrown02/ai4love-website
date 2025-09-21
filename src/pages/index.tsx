@@ -170,12 +170,9 @@ export default function Home() {
     
     // Check if Supabase is available
     if (!supabase) {
-      // For now, simulate success without database lookup
-      setOrgName('Your Organization')
-      setTimeout(() => {
-        setSubmitted(true)
-        setIsTransitioning(false)
-      }, 1500)
+      console.error('Supabase client is not available - check environment variables')
+      setIsTransitioning(false)
+      setError('Database connection not available. Please check configuration.')
       return
     }
     
@@ -190,20 +187,31 @@ export default function Home() {
     try {
       // Format the registration number to match your database format
       const formattedNumber = formatRegistrationNumber(registrationNumber)
-      console.log('Searching for formatted number:', formattedNumber)
+      console.log('Original input:', registrationNumber)
+      console.log('Formatted number:', formattedNumber)
+      console.log('Supabase client available:', !!supabase)
       
       // Test Supabase connection first
-      const { data: testData, error: testError } = await supabase
+      console.log('Testing Supabase connection...')
+      const { data: testData, error: testError, count: testCount } = await supabase
         .from('NonProfitNumber')
         .select('*', { count: 'exact' })
         .limit(1)
       
+      console.log('Connection test result:', { testData, testError, testCount })
+      
       if (testError) {
         console.error('Supabase connection test failed:', testError)
-        throw new Error(`Database connection failed: ${testError.message}`)
+        console.error('Error details:', {
+          message: testError.message,
+          details: testError.details,
+          hint: testError.hint,
+          code: testError.code
+        })
+        throw new Error(`Database connection failed: ${testError.message} (${testError.code})`)
       }
       
-      console.log('Supabase connection test successful')
+      console.log('Supabase connection test successful. Table has', testCount, 'total records')
       
       // Query the database for the nonprofit organization
       // Try different possible column names for the business number
