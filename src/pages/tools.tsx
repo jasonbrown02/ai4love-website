@@ -157,14 +157,23 @@ export default function ToolsMapping() {
             </div>
             
             {/* With AI4Love */}
-            <div className="space-y-4">
+            <div className="space-y-4 rounded-xl p-6" style={{ backgroundColor: 'rgba(236, 59, 37, 0.1)' }}>
               <h4 className="font-semibold font-poppins text-gray-700 mb-4">
                 With AI4Love
               </h4>
-              <div className="space-y-3 text-gray-600 font-poppins leading-relaxed">
-                <p>We notice when your Constant Contact volunteer also shows up at an Eventbrite fundraiser.</p>
-                <p>We surface when your Zoom attendee is also a recurring Stripe donor.</p>
-                <p>We connect those dots quietly, so you never miss the bigger story.</p>
+              <div className="space-y-3 font-poppins leading-relaxed">
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We notice when your Constant Contact volunteer also shows up at an Eventbrite fundraiser.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We surface when your Zoom attendee is also a recurring Stripe donor.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We connect those dots quietly, so you never miss the bigger story.</span>
+                </p>
               </div>
             </div>
           </div>
@@ -199,14 +208,23 @@ export default function ToolsMapping() {
             </div>
             
             {/* With AI4Love */}
-            <div className="space-y-4">
+            <div className="space-y-4 rounded-xl p-6" style={{ backgroundColor: 'rgba(236, 59, 37, 0.1)' }}>
               <h4 className="font-semibold font-poppins text-gray-700 mb-4">
                 With AI4Love
               </h4>
-              <div className="space-y-3 text-gray-600 font-poppins leading-relaxed">
-                <p>We see that the person who gave through CanadaHelps is also a volunteer listed in Google Sheets.</p>
-                <p>We recognize when a Slack conversation overlaps with a Stripe recurring gift.</p>
-                <p>We stitch together the threads that reveal your true community story.</p>
+              <div className="space-y-3 font-poppins leading-relaxed">
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We see that the person who gave through CanadaHelps is also a volunteer listed in Google Sheets.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We recognize when a Slack conversation overlaps with a Stripe recurring gift.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We stitch together the threads that reveal your true community story.</span>
+                </p>
               </div>
             </div>
           </div>
@@ -241,14 +259,23 @@ export default function ToolsMapping() {
             </div>
             
             {/* With AI4Love */}
-            <div className="space-y-4">
+            <div className="space-y-4 rounded-xl p-6" style={{ backgroundColor: 'rgba(236, 59, 37, 0.1)' }}>
               <h4 className="font-semibold font-poppins text-gray-700 mb-4">
                 With AI4Love
               </h4>
-              <div className="space-y-3 text-gray-600 font-poppins leading-relaxed">
-                <p>We flag when a board member shows up in your Zoom logs and is also in your donor CRM.</p>
-                <p>We notice when a first-time donor joins your Mailchimp list and attends an event.</p>
-                <p>We reveal relationships across tools, day and night, so opportunities aren't lost.</p>
+              <div className="space-y-3 font-poppins leading-relaxed">
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We flag when a board member shows up in your Zoom logs and is also in your donor CRM.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We notice when a first-time donor joins your Mailchimp list and attends an event.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
+                  <span className="font-bold text-gray-700">We reveal relationships across tools, day and night, so opportunities aren't lost.</span>
+                </p>
               </div>
             </div>
           </div>
