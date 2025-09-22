@@ -322,7 +322,7 @@ export default function Home() {
     if (!supabase) {
       console.error('Supabase client is not available - check environment variables')
       setIsTransitioning(false)
-      setError('Database connection not available. Please check configuration.')
+      setError('Service temporarily unavailable. Please try again later.')
       return
     }
     
@@ -368,12 +368,17 @@ export default function Home() {
       let data, error;
       
       // First, let's get a sample record to see the column structure
-      const { data: sampleData } = await supabase
+      const { data: sampleData, error: sampleError } = await supabase
         .from('NonProfitNumber')
         .select('*')
         .limit(1)
       
-      if (sampleData && sampleData.length > 0) {
+      if (sampleError) {
+        console.error('Error getting sample data:', sampleError)
+        throw new Error(`Database query failed: ${sampleError.message}`)
+      }
+      
+      if (sampleData && Array.isArray(sampleData) && sampleData.length > 0 && sampleData[0]) {
         const columns = Object.keys(sampleData[0])
         console.log('Available columns:', columns)
         
@@ -443,7 +448,7 @@ export default function Home() {
           throw new Error(`Error accessing table: ${allError.message} (Code: ${allError.code})`)
         }
         
-        if (allData && allData.length > 0) {
+        if (allData && Array.isArray(allData) && allData.length > 0 && allData[0]) {
           console.log('Found data in broader search:', allData)
           const columns = Object.keys(allData[0])
           console.log('Available columns:', columns)
@@ -509,7 +514,7 @@ export default function Home() {
         throw new Error(`Database query failed: ${error.message}`)
       }
       
-      if (data && data.length > 0) {
+      if (data && Array.isArray(data) && data.length > 0 && data[0]) {
         // We found the organization in the database
         const org = data[0]
         console.log('Found organization:', org)
@@ -528,7 +533,17 @@ export default function Home() {
     } catch (err: any) {
       console.error('Error validating nonprofit organization:', err)
       setIsTransitioning(false)
-      setError(err.message || 'Error validating nonprofit organization. Please try again.')
+      
+      // Provide more user-friendly error messages
+      if (err.message && err.message.includes('destructured parameter')) {
+        setError('Service temporarily unavailable. Please try again in a few moments.')
+      } else if (err.message && err.message.includes('Database connection failed')) {
+        setError('Unable to connect to our database. Please check your internet connection and try again.')
+      } else if (err.message && err.message.includes('E425')) {
+        setError('Service temporarily unavailable. Please try again later.')
+      } else {
+        setError('Unable to validate nonprofit number. Please check the number and try again.')
+      }
     }
   }, [registrationNumber])
 
@@ -643,13 +658,34 @@ export default function Home() {
                   className="bg-white p-4 rounded-r-full hover:bg-gray-100 transition-colors focus:outline-none disabled:opacity-50"
                   style={{ color: '#ec3b25' }}
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
+                  {isTransitioning ? (
+                    <svg className="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  )}
                 </button>
               </div>
               
-              {error && (
+              {isTransitioning && (
+                <div className="mt-6 text-center">
+                  <div className="inline-flex items-center space-x-3 bg-white bg-opacity-10 backdrop-blur-sm rounded-full px-6 py-3">
+                    <svg className="w-5 h-5 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span className="text-white font-poppins text-sm">
+                      Searching our database...
+                    </span>
+                  </div>
+                </div>
+              )}
+              
+              {error && !isTransitioning && (
                 <p className="mt-4 text-white font-poppins">{error}</p>
               )}
             </div>
