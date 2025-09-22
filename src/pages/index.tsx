@@ -5,46 +5,12 @@ import { supabase } from '@/lib/supabase'
 // Component for the logged-in state
 function LoggedInView({ orgName }: { orgName: string }) {
   const [showContactOptions, setShowContactOptions] = useState(false)
-  const [chatbotOrgName, setChatbotOrgName] = useState(orgName || 'Friend')
 
   useEffect(() => {
-    // Fetch organization info from API
-    const fetchOrgInfo = async () => {
-      try {
-        // Use a placeholder userId for now - this should be replaced with actual Passage user ID
-        const userId = 'current-user' // TODO: Replace with actual Passage user ID
-        const response = await fetch(`/api/org-info?userId=${userId}`)
-        
-        if (response.ok) {
-          const data = await response.json()
-          setChatbotOrgName(data.orgName || orgName || 'Friend')
-        } else {
-          setChatbotOrgName(orgName || 'Friend')
-        }
-      } catch (error) {
-        console.error('Error fetching org info:', error)
-        setChatbotOrgName(orgName || 'Friend')
-      }
-    }
-
-    fetchOrgInfo()
-  }, [orgName])
-
-  useEffect(() => {
-    // Load the chatbot script first
+    // Load the chatbot script
     const script = document.createElement('script')
     script.src = 'https://cdn.jotfor.ms/agent/embedjs/01996e6148977f2f87f4c0acb4ff6c7518c3/embed.js'
     script.async = true
-    
-    // Set up configuration before loading the script
-    ;(window as any).jotformEmbedConfig = {
-      orgName: chatbotOrgName,
-      customData: {
-        organizationName: chatbotOrgName,
-        userType: 'authenticated'
-      }
-    }
-    
     document.body.appendChild(script)
 
     // Try to customize the chatbot appearance after it loads
@@ -52,7 +18,6 @@ function LoggedInView({ orgName }: { orgName: string }) {
       // Look for common chatbot elements and try to style them
       const chatElements = document.querySelectorAll('[class*="jotform"], [class*="chat"], [id*="chat"], iframe')
       if (chatElements.length > 0) {
-        console.log('Found chatbot elements:', chatElements.length, 'Organization name:', chatbotOrgName)
         chatElements.forEach(element => {
           const htmlElement = element as HTMLElement
           // Try to integrate the chatbot into our container
@@ -69,35 +34,10 @@ function LoggedInView({ orgName }: { orgName: string }) {
               htmlElement.style.borderRadius = '8px'
               htmlElement.style.backgroundColor = 'transparent'
               
-              // If it's an iframe, ensure it's properly sized and has orgName parameter
+              // If it's an iframe, ensure it's properly sized
               if (htmlElement.tagName === 'IFRAME') {
-                const iframe = htmlElement as HTMLIFrameElement
                 htmlElement.style.minHeight = '600px'
                 htmlElement.style.maxHeight = '800px'
-                
-                // Add orgName parameter to iframe src if it doesn't already have it
-                console.log('Original iframe src:', iframe.src)
-                if (iframe.src && !iframe.src.includes('orgName=')) {
-                  const separator = iframe.src.includes('?') ? '&' : '?'
-                  const newSrc = `${iframe.src}${separator}orgName=${encodeURIComponent(chatbotOrgName)}`
-                  console.log('Updated iframe src:', newSrc)
-                  iframe.src = newSrc
-                } else {
-                  console.log('orgName already in URL or no src found')
-                }
-                
-                // Also try to send organization name via postMessage
-                iframe.onload = () => {
-                  try {
-                    iframe.contentWindow?.postMessage({
-                      type: 'setOrgName',
-                      orgName: chatbotOrgName,
-                      organizationName: chatbotOrgName
-                    }, '*')
-                  } catch (e) {
-                    console.log('Could not send postMessage to iframe:', e)
-                  }
-                }
               }
             } catch (e) {
               console.log('Could not move chatbot element:', e)
@@ -111,33 +51,8 @@ function LoggedInView({ orgName }: { orgName: string }) {
             htmlElement.style.borderRadius = '8px'
             
             if (htmlElement.tagName === 'IFRAME') {
-              const iframe = htmlElement as HTMLIFrameElement
               htmlElement.style.minHeight = '600px'
               htmlElement.style.maxHeight = '800px'
-              
-              // Add orgName parameter to iframe src if it doesn't already have it
-              console.log('Original iframe src (existing):', iframe.src)
-              if (iframe.src && !iframe.src.includes('orgName=')) {
-                const separator = iframe.src.includes('?') ? '&' : '?'
-                const newSrc = `${iframe.src}${separator}orgName=${encodeURIComponent(chatbotOrgName)}`
-                console.log('Updated iframe src (existing):', newSrc)
-                iframe.src = newSrc
-              } else {
-                console.log('orgName already in URL or no src found (existing)')
-              }
-              
-              // Also try to send organization name via postMessage
-              iframe.onload = () => {
-                try {
-                  iframe.contentWindow?.postMessage({
-                    type: 'setOrgName',
-                    orgName: chatbotOrgName,
-                    organizationName: chatbotOrgName
-                  }, '*')
-                } catch (e) {
-                  console.log('Could not send postMessage to iframe:', e)
-                }
-              }
             }
           }
         })
@@ -155,7 +70,7 @@ function LoggedInView({ orgName }: { orgName: string }) {
         document.body.removeChild(script)
       }
     }
-  }, [chatbotOrgName])
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
