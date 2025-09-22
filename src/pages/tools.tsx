@@ -140,75 +140,52 @@ export default function ToolsMapping() {
     // Generate dynamic stories based on selected tools
     const generateDynamicStories = () => {
       const toolNames = selectedToolsData.map(t => t.name)
-      const stories = []
+      const connectionExamples = []
       
-      // Story 1: Cross-platform connections
-      const story1Examples = []
+      // Cross-platform connections
       if (toolNames.some(name => name.includes('Constant Contact')) && toolNames.some(name => name.includes('Eventbrite'))) {
-        story1Examples.push("We notice when your Constant Contact volunteer also shows up at an Eventbrite fundraiser.")
+        connectionExamples.push("We notice when your Constant Contact volunteer also shows up at an Eventbrite fundraiser.")
       }
       if (toolNames.some(name => name.includes('Zoom')) && toolNames.some(name => name.includes('Stripe'))) {
-        story1Examples.push("We surface when your Zoom attendee is also a recurring Stripe donor.")
+        connectionExamples.push("We surface when your Zoom attendee is also a recurring Stripe donor.")
       }
       if (toolNames.some(name => name.includes('Mailchimp')) && toolNames.some(name => name.includes('DonorPerfect'))) {
-        story1Examples.push("We connect your Mailchimp subscribers to their DonorPerfect giving history.")
+        connectionExamples.push("We connect your Mailchimp subscribers to their DonorPerfect giving history.")
       }
       if (toolNames.some(name => name.includes('Salesforce')) && toolNames.some(name => name.includes('WordPress'))) {
-        story1Examples.push("We link Salesforce contacts to their WordPress website engagement.")
+        connectionExamples.push("We link Salesforce contacts to their WordPress website engagement.")
       }
       if (toolNames.some(name => name.includes('Google')) && toolNames.some(name => name.includes('Bloomerang'))) {
-        story1Examples.push("We match Google Workspace volunteers with their Bloomerang donation patterns.")
+        connectionExamples.push("We match Google Workspace volunteers with their Bloomerang donation patterns.")
       }
-      
-      // Story 2: System integration
-      const story2Examples = []
       if (toolNames.some(name => name.includes('CanadaHelps')) && toolNames.some(name => name.includes('Google'))) {
-        story2Examples.push("We see that the person who gave through CanadaHelps is also a volunteer listed in Google Sheets.")
+        connectionExamples.push("We see that the person who gave through CanadaHelps is also a volunteer listed in Google Sheets.")
       }
       if (toolNames.some(name => name.includes('Slack')) && toolNames.some(name => name.includes('Stripe'))) {
-        story2Examples.push("We recognize when a Slack conversation overlaps with a Stripe recurring gift.")
+        connectionExamples.push("We recognize when a Slack conversation overlaps with a Stripe recurring gift.")
       }
       if (toolNames.some(name => name.includes('HubSpot')) && toolNames.some(name => name.includes('Eventbrite'))) {
-        story2Examples.push("We connect HubSpot marketing contacts to their Eventbrite event participation.")
+        connectionExamples.push("We connect HubSpot marketing contacts to their Eventbrite event participation.")
       }
       if (toolNames.some(name => name.includes('QuickBooks')) && toolNames.some(name => name.includes('Virtuous'))) {
-        story2Examples.push("We align QuickBooks financial data with Virtuous donor relationship insights.")
-      }
-      
-      // Story 3: Proactive monitoring
-      const story3Examples = []
-      if (toolNames.some(name => name.includes('Zoom')) && toolNames.some(name => name.includes('DonorPerfect'))) {
-        story3Examples.push("We flag when a board member shows up in your Zoom logs and is also in your donor CRM.")
-      }
-      if (toolNames.some(name => name.includes('Mailchimp')) && toolNames.some(name => name.includes('Eventbrite'))) {
-        story3Examples.push("We notice when a first-time donor joins your Mailchimp list and attends an event.")
-      }
-      if (toolNames.some(name => name.includes('Salesforce')) && toolNames.some(name => name.includes('Slack'))) {
-        story3Examples.push("We track when Salesforce prospects engage in Slack community discussions.")
+        connectionExamples.push("We align QuickBooks financial data with Virtuous donor relationship insights.")
       }
       if (toolNames.some(name => name.includes('WordPress')) && toolNames.some(name => name.includes('Stripe'))) {
-        story3Examples.push("We monitor WordPress blog engagement from your Stripe recurring donors.")
+        connectionExamples.push("We monitor WordPress blog engagement from your Stripe recurring donors.")
       }
       
       // Add generic examples if not enough specific ones
-      if (story1Examples.length === 0 && selectedToolsData.length >= 2) {
-        story1Examples.push(`We notice when someone appears in both ${toolNames[0]} and ${toolNames[1]}.`)
+      if (connectionExamples.length === 0 && selectedToolsData.length >= 2) {
+        connectionExamples.push(`We notice when someone appears in both ${toolNames[0]} and ${toolNames[1]}.`)
       }
-      if (story2Examples.length === 0 && selectedToolsData.length >= 2) {
-        story2Examples.push(`We connect data between ${toolNames[0]} and ${toolNames[1]} to reveal the full story.`)
-      }
-      if (story3Examples.length === 0 && selectedToolsData.length >= 1) {
-        story3Examples.push(`We continuously monitor ${toolNames[0]} for important relationship signals.`)
+      if (connectionExamples.length < 2 && selectedToolsData.length >= 2) {
+        connectionExamples.push(`We connect data between ${toolNames[0]} and ${toolNames[1]} to reveal the full story.`)
       }
       
-      return {
-        story1: story1Examples.slice(0, 3),
-        story2: story2Examples.slice(0, 3), 
-        story3: story3Examples.slice(0, 3)
-      }
+      return connectionExamples.slice(0, 3)
     }
     
-    const dynamicStories = generateDynamicStories()
+    const dynamicConnections = generateDynamicStories()
     
     return (
       <div className="mt-8 space-y-8">
@@ -237,8 +214,8 @@ export default function ToolsMapping() {
                 With AI4Love
               </h4>
               <div className="space-y-3 font-poppins leading-relaxed">
-                {dynamicStories.story1.length > 0 ? (
-                  dynamicStories.story1.map((story, index) => (
+                {dynamicConnections.length > 0 ? (
+                  dynamicConnections.map((story: string, index: number) => (
                     <p key={index} className="flex items-start space-x-3">
                       <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
                       <span className="font-bold text-gray-700">{story}</span>
@@ -257,110 +234,6 @@ export default function ToolsMapping() {
           <div className="text-center border-t border-gray-100 pt-6">
             <p className="text-lg font-poppins text-gray-700 italic">
               It's not about more dashboards. It's about seeing the hidden connections that make your community whole.
-            </p>
-          </div>
-        </div>
-
-        {/* Subtle divider */}
-        <div className="border-t border-gray-200"></div>
-
-        {/* Version 2: The Living Tapestry */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-          <h3 className="text-2xl font-semibold font-poppins text-center mb-8" style={{ color: '#ec3b25' }}>
-            What Happens When Your Tools Talk to Each Other
-          </h3>
-          
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {/* Without AI4Love */}
-            <div className="space-y-4">
-              <h4 className="font-semibold font-poppins text-gray-700 mb-4">
-                Without AI4Love
-              </h4>
-              <div className="space-y-3 text-gray-600 font-poppins leading-relaxed">
-                <p>Each system speaks its own language.</p>
-                <p>Donor history is separated from event attendance.</p>
-                <p>Valuable patterns stay buried.</p>
-              </div>
-            </div>
-            
-            {/* With AI4Love */}
-            <div className="space-y-4 rounded-xl p-6" style={{ backgroundColor: 'rgba(236, 59, 37, 0.1)' }}>
-              <h4 className="font-semibold font-poppins text-gray-700 mb-4">
-                With AI4Love
-              </h4>
-              <div className="space-y-3 font-poppins leading-relaxed">
-                {dynamicStories.story2.length > 0 ? (
-                  dynamicStories.story2.map((story, index) => (
-                    <p key={index} className="flex items-start space-x-3">
-                      <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
-                      <span className="font-bold text-gray-700">{story}</span>
-                    </p>
-                  ))
-                ) : (
-                  <p className="flex items-start space-x-3">
-                    <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
-                    <span className="font-bold text-gray-700">We stitch together the threads that reveal your true community story.</span>
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-          
-          <div className="text-center border-t border-gray-100 pt-6">
-            <p className="text-lg font-poppins text-gray-700 italic">
-              We don't add more noise. We weave a clearer picture from what's already there.
-            </p>
-          </div>
-        </div>
-
-        {/* Subtle divider */}
-        <div className="border-t border-gray-200"></div>
-
-        {/* Version 3: The Quiet Observer */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-          <h3 className="text-2xl font-semibold font-poppins text-center mb-8" style={{ color: '#ec3b25' }}>
-            Always Watching for What Matters Most
-          </h3>
-          
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {/* Without AI4Love */}
-            <div className="space-y-4">
-              <h4 className="font-semibold font-poppins text-gray-700 mb-4">
-                Without AI4Love
-              </h4>
-              <div className="space-y-3 text-gray-600 font-poppins leading-relaxed">
-                <p>Manual reports take hours and miss key links.</p>
-                <p>Relationships slip through the cracks.</p>
-                <p>Decisions are reactive, not proactive.</p>
-              </div>
-            </div>
-            
-            {/* With AI4Love */}
-            <div className="space-y-4 rounded-xl p-6" style={{ backgroundColor: 'rgba(236, 59, 37, 0.1)' }}>
-              <h4 className="font-semibold font-poppins text-gray-700 mb-4">
-                With AI4Love
-              </h4>
-              <div className="space-y-3 font-poppins leading-relaxed">
-                {dynamicStories.story3.length > 0 ? (
-                  dynamicStories.story3.map((story, index) => (
-                    <p key={index} className="flex items-start space-x-3">
-                      <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
-                      <span className="font-bold text-gray-700">{story}</span>
-                    </p>
-                  ))
-                ) : (
-                  <p className="flex items-start space-x-3">
-                    <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✓</span>
-                    <span className="font-bold text-gray-700">We reveal relationships across tools, day and night, so opportunities aren't lost.</span>
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-          
-          <div className="text-center border-t border-gray-100 pt-6">
-            <p className="text-lg font-poppins text-gray-700 italic">
-              AI4Love works quietly in the background — so you can focus on people, not platforms.
             </p>
           </div>
         </div>
