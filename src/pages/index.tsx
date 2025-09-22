@@ -16,7 +16,7 @@ function LoggedInView({ orgName }: { orgName: string }) {
     // Try to customize the chatbot appearance after it loads
     const checkForChatbot = setInterval(() => {
       // Look for common chatbot elements and try to style them
-      const chatElements = document.querySelectorAll('[class*="jotform"], [class*="chat"], [id*="chat"]')
+      const chatElements = document.querySelectorAll('[class*="jotform"], [class*="chat"], [id*="chat"], iframe')
       if (chatElements.length > 0) {
         chatElements.forEach(element => {
           const htmlElement = element as HTMLElement
@@ -29,10 +29,30 @@ function LoggedInView({ orgName }: { orgName: string }) {
               container.appendChild(htmlElement)
               htmlElement.style.width = '100%'
               htmlElement.style.height = '100%'
+              htmlElement.style.minHeight = '500px'
               htmlElement.style.border = 'none'
               htmlElement.style.borderRadius = '8px'
+              htmlElement.style.backgroundColor = 'transparent'
+              
+              // If it's an iframe, ensure it's properly sized
+              if (htmlElement.tagName === 'IFRAME') {
+                htmlElement.style.minHeight = '600px'
+                htmlElement.style.maxHeight = '800px'
+              }
             } catch (e) {
               console.log('Could not move chatbot element:', e)
+            }
+          } else if (htmlElement.parentNode === container) {
+            // If already in container, just ensure proper styling
+            htmlElement.style.width = '100%'
+            htmlElement.style.height = '100%'
+            htmlElement.style.minHeight = '500px'
+            htmlElement.style.border = 'none'
+            htmlElement.style.borderRadius = '8px'
+            
+            if (htmlElement.tagName === 'IFRAME') {
+              htmlElement.style.minHeight = '600px'
+              htmlElement.style.maxHeight = '800px'
             }
           }
         })
@@ -126,24 +146,24 @@ function LoggedInView({ orgName }: { orgName: string }) {
       </div>
 
       {/* Right side - Integrated Chat Area */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center px-6 lg:px-8 py-8 lg:py-0">
-        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 lg:p-8 w-full max-w-md lg:max-w-lg">
-          <div className="text-center mb-6">
-            <div className="bg-white bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="w-full lg:w-1/2 flex flex-col px-6 lg:px-8 py-8 lg:py-4">
+        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 w-full h-full flex flex-col">
+          <div className="text-center mb-4">
+            <div className="bg-white bg-opacity-20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
-            <h3 className="text-xl font-poppins font-semibold text-white mb-2">
+            <h3 className="text-lg font-poppins font-semibold text-white mb-2">
               AI Assistant
             </h3>
-            <p className="text-white opacity-80 font-poppins text-sm">
-              Ask me anything about AI4Love, relationship intelligence, or how we can help your organization grow.
+            <p className="text-white opacity-80 font-poppins text-xs">
+              Ask me anything about AI4Love or relationship intelligence
             </p>
           </div>
           
-          {/* Chat integration area - the chatbot will appear here */}
-          <div id="ai4love-chat-container" className="min-h-[300px] lg:min-h-[400px] bg-white bg-opacity-5 rounded-lg p-4 flex items-center justify-center">
+          {/* Chat integration area - much larger and more usable */}
+          <div id="ai4love-chat-container" className="flex-1 bg-white bg-opacity-5 rounded-lg p-2 flex items-center justify-center min-h-[500px] lg:min-h-[600px]">
             <div className="text-center text-white opacity-60">
               <div className="animate-pulse">
                 <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full mx-auto mb-2"></div>
@@ -565,6 +585,36 @@ export default function Home() {
         @keyframes pulse {
           0%, 100% { transform: translate(-50%, -50%) scale(1); }
           50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+        
+        /* Chatbot styling overrides for better usability */
+        #ai4love-chat-container iframe,
+        #ai4love-chat-container [class*="jotform"],
+        #ai4love-chat-container [class*="chat"] {
+          width: 100% !important;
+          height: 100% !important;
+          min-height: 500px !important;
+          max-height: 800px !important;
+          border: none !important;
+          border-radius: 8px !important;
+          background: transparent !important;
+        }
+        
+        /* Ensure chat input and messages are visible */
+        #ai4love-chat-container input,
+        #ai4love-chat-container textarea,
+        #ai4love-chat-container [class*="message"],
+        #ai4love-chat-container [class*="input"] {
+          font-size: 14px !important;
+          line-height: 1.4 !important;
+          padding: 8px !important;
+        }
+        
+        /* Make sure the chat container takes full space */
+        #ai4love-chat-container {
+          display: flex !important;
+          flex-direction: column !important;
+          height: 100% !important;
         }
       `}</style>
 
