@@ -561,7 +561,7 @@ export default function Home() {
   return (
     <HomeLayout title={title} description={description} canonicalUrl="https://ai4love.com">
       {/* Red background with heart animation */}
-      <div className="fixed inset-0 bg-red-600" style={{ backgroundColor: '#ec3b25' }}>
+      <div className="fixed inset-0" style={{ backgroundColor: '#ec3b25' }}>
         {/* Animation container */}
         <div id="animation-container" className="absolute inset-0">
           <svg id="connections" className="absolute inset-0 w-full h-full pointer-events-none z-0"></svg>
