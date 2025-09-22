@@ -4,6 +4,8 @@ import { supabase } from '@/lib/supabase'
 
 // Component for the logged-in state
 function LoggedInView({ orgName }: { orgName: string }) {
+  const [showContactOptions, setShowContactOptions] = useState(false)
+
   useEffect(() => {
     // Load the chatbot script when component mounts
     const script = document.createElement('script')
@@ -11,8 +13,39 @@ function LoggedInView({ orgName }: { orgName: string }) {
     script.async = true
     document.body.appendChild(script)
 
+    // Try to customize the chatbot appearance after it loads
+    const checkForChatbot = setInterval(() => {
+      // Look for common chatbot elements and try to style them
+      const chatElements = document.querySelectorAll('[class*="jotform"], [class*="chat"], [id*="chat"]')
+      if (chatElements.length > 0) {
+        chatElements.forEach(element => {
+          const htmlElement = element as HTMLElement
+          // Try to integrate the chatbot into our container
+          const container = document.getElementById('ai4love-chat-container')
+          if (container && htmlElement.parentNode !== container) {
+            // Move the chatbot into our container if possible
+            try {
+              container.innerHTML = ''
+              container.appendChild(htmlElement)
+              htmlElement.style.width = '100%'
+              htmlElement.style.height = '100%'
+              htmlElement.style.border = 'none'
+              htmlElement.style.borderRadius = '8px'
+            } catch (e) {
+              console.log('Could not move chatbot element:', e)
+            }
+          }
+        })
+        clearInterval(checkForChatbot)
+      }
+    }, 1000)
+
+    // Clear interval after 10 seconds to avoid infinite checking
+    setTimeout(() => clearInterval(checkForChatbot), 10000)
+
     // Cleanup function to remove script when component unmounts
     return () => {
+      clearInterval(checkForChatbot)
       if (document.body.contains(script)) {
         document.body.removeChild(script)
       }
@@ -20,10 +53,106 @@ function LoggedInView({ orgName }: { orgName: string }) {
   }, [])
 
   return (
-    <div className="text-white text-center">
-      <h1 className="text-2xl md:text-3xl font-bold mb-8 font-poppins">
-        Welcome {orgName}
-      </h1>
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Left side - Welcome content */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 lg:px-8 py-8 lg:py-0 text-white">
+        <div className="max-w-lg mx-auto lg:mx-0">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 font-poppins text-center lg:text-left">
+            Welcome, {orgName}
+          </h1>
+          
+          <div className="space-y-4 text-base lg:text-lg font-poppins opacity-90 mb-8 text-center lg:text-left">
+            <p>
+              We're excited to help you unlock the power of relationship intelligence for your organization.
+            </p>
+            <p>
+              Our AI-powered platform transforms your supporter data into actionable insights, helping you build stronger relationships and drive greater impact.
+            </p>
+          </div>
+
+          {/* Contact Options */}
+          <div className="space-y-4 flex flex-col items-center lg:items-start">
+            <button
+              onClick={() => setShowContactOptions(!showContactOptions)}
+              className="bg-white text-red-600 px-6 py-3 rounded-full font-poppins font-semibold hover:bg-gray-100 transition-colors flex items-center space-x-2 shadow-lg"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              <span>Contact Us</span>
+            </button>
+
+            {showContactOptions && (
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4 space-y-3 w-full max-w-sm">
+                <p className="text-white font-poppins text-sm mb-3">Choose how you'd like to connect:</p>
+                <div className="flex flex-col space-y-2">
+                  <button
+                    onClick={() => {
+                      // Trigger the chatbot to open
+                      const chatButton = document.querySelector('[data-testid="chat-button"]') as HTMLElement
+                      if (chatButton) {
+                        chatButton.click()
+                      } else {
+                        // Fallback - try to find any chat-related element
+                        const chatElements = document.querySelectorAll('[class*="chat"], [id*="chat"], [class*="jotform"]')
+                        if (chatElements.length > 0) {
+                          (chatElements[0] as HTMLElement).click()
+                        }
+                      }
+                      setShowContactOptions(false)
+                    }}
+                    className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg font-poppins hover:bg-opacity-30 transition-colors flex items-center space-x-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span>Start Chat</span>
+                  </button>
+                  <a
+                    href="mailto:hello@ai4love.com"
+                    className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg font-poppins hover:bg-opacity-30 transition-colors flex items-center space-x-2"
+                    onClick={() => setShowContactOptions(false)}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span>Send Email</span>
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Right side - Integrated Chat Area */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center px-6 lg:px-8 py-8 lg:py-0">
+        <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 lg:p-8 w-full max-w-md lg:max-w-lg">
+          <div className="text-center mb-6">
+            <div className="bg-white bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-poppins font-semibold text-white mb-2">
+              AI Assistant
+            </h3>
+            <p className="text-white opacity-80 font-poppins text-sm">
+              Ask me anything about AI4Love, relationship intelligence, or how we can help your organization grow.
+            </p>
+          </div>
+          
+          {/* Chat integration area - the chatbot will appear here */}
+          <div id="ai4love-chat-container" className="min-h-[300px] lg:min-h-[400px] bg-white bg-opacity-5 rounded-lg p-4 flex items-center justify-center">
+            <div className="text-center text-white opacity-60">
+              <div className="animate-pulse">
+                <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full mx-auto mb-2"></div>
+                <p className="text-sm font-poppins">Chat loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -440,9 +569,9 @@ export default function Home() {
       `}</style>
 
       {/* Content */}
-      <div className="relative z-20 flex items-center justify-center min-h-screen">
-        <div className="w-full max-w-xl px-6">
-          {!submitted ? (
+      {!submitted ? (
+        <div className="relative z-20 flex items-center justify-center min-h-screen">
+          <div className="w-full max-w-xl px-6">
             <div className="text-white">
               <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 font-poppins">
                 We're glad we found you.
@@ -472,11 +601,13 @@ export default function Home() {
                 <p className="mt-4 text-white font-poppins">{error}</p>
               )}
             </div>
-          ) : (
-            <LoggedInView orgName={orgName} />
-          )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="relative z-20">
+          <LoggedInView orgName={orgName} />
+        </div>
+      )}
     </HomeLayout>
   )
 }
