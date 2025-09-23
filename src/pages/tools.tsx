@@ -201,10 +201,19 @@ export default function ToolsMapping() {
               <h4 className="font-semibold font-poppins text-gray-700 mb-4">
                 Without AI4Love
               </h4>
-              <div className="space-y-3 text-gray-600 font-poppins leading-relaxed">
-                <p>Donor CRM, event signup, and email list live in silos.</p>
-                <p>You see fragments of data, not full journeys.</p>
-                <p>Connections between supporters are hidden.</p>
+              <div className="space-y-3 font-poppins leading-relaxed">
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✗</span>
+                  <span className="text-gray-600">Donor CRM, event signup, and email list live in silos.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✗</span>
+                  <span className="text-gray-600">You see fragments of data, not full journeys.</span>
+                </p>
+                <p className="flex items-start space-x-3">
+                  <span className="text-lg mt-0.5" style={{ color: '#ec3b25' }}>✗</span>
+                  <span className="text-gray-600">Connections between supporters are hidden.</span>
+                </p>
               </div>
             </div>
             
