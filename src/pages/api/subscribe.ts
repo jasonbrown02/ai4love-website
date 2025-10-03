@@ -43,8 +43,8 @@ Tag: Early Advisor
       
       try {
         await resend.emails.send({
-          from: 'AI4Love Updates <noreply@ai4love.com>',
-          to: ['scott@ai4love.com'], // Add more emails as needed
+          from: 'AI4Love Updates <onboarding@resend.dev>',
+          to: ['scott@ai4love.com', 'jason@ai4love.ca'],
           subject: `New Subscriber: ${email}`,
           text: emailContent,
         })
