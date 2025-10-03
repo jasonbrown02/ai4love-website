@@ -124,6 +124,23 @@ export default function DemoFeedbackHub() {
           </p>
         </div>
 
+        {/* Request Demo Access - Coming Soon */}
+        <div className="mb-16 p-8 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl border-2 border-gray-700 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold font-poppins mb-3 text-white">
+            Request Access to Our Demo
+          </h2>
+          <p className="text-lg text-gray-300 font-poppins mb-6">
+            We're building something special and can't wait to show you. 
+            Early access coming soon—be among the first to experience it.
+          </p>
+          <a 
+            href="mailto:scott@ai4love.com?subject=Demo Access Request"
+            className="inline-block bg-brand-red text-white px-8 py-3 rounded-lg font-poppins font-semibold text-lg hover:bg-red-600 transition-colors"
+          >
+            Request Early Access
+          </a>
+        </div>
+
         {/* Section 1: Key Concepts */}
         <div className="mb-16 p-8 bg-gradient-to-br from-red-50 to-orange-50 rounded-xl border-2 border-red-200">
           <h2 className="text-3xl font-bold font-poppins mb-6 text-gray-900">Key Concepts From Today</h2>
