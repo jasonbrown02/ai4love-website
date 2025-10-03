@@ -151,7 +151,7 @@ export default function DemoFeedbackHub() {
           </ul>
           <div className="mt-6">
             <a 
-              href="/docs/downloads/ai4love-overview.pdf" 
+              href="/downloads/ai4love-overview.pdf" 
               className="inline-flex items-center text-brand-red hover:text-red-700 font-semibold font-poppins"
             >
               Want to see the full overview? Download the PDF →
@@ -377,7 +377,7 @@ export default function DemoFeedbackHub() {
                 Download our "Rethinking Generosity" overview
               </p>
               <a 
-                href="/docs/downloads/ai4love-overview.pdf" 
+                href="/downloads/ai4love-overview.pdf" 
                 className="inline-flex items-center text-brand-red hover:text-red-700 font-semibold font-poppins"
               >
                 Download PDF →
