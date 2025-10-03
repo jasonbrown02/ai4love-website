@@ -42,12 +42,13 @@ Tag: Early Advisor
       const resend = new Resend(process.env.RESEND_API_KEY)
       
       try {
-        await resend.emails.send({
-          from: 'AI4Love Updates <onboarding@resend.dev>',
-          to: ['scott@ai4love.com', 'jason@ai4love.ca'],
+        const result = await resend.emails.send({
+          from: 'AI4Love Updates <updates@ai4love.ca>',
+          to: ['scott@ai4love.ca', 'jason@ai4love.ca'],
           subject: `New Subscriber: ${email}`,
           text: emailContent,
         })
+        console.log('Resend API response:', result)
         console.log('Email notification sent successfully')
       } catch (emailError) {
         console.error('Error sending email:', emailError)

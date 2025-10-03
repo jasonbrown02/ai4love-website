@@ -65,6 +65,10 @@ export default function DemoFeedbackHub() {
           followUp: '',
           other: ''
         })
+      } else {
+        const errorData = await response.text()
+        console.error('API error:', response.status, errorData)
+        alert(`Error: ${response.status} - ${errorData}`)
       }
     } catch (error) {
       console.error('Error submitting feedback:', error)
@@ -76,9 +80,11 @@ export default function DemoFeedbackHub() {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Form submitted, starting API call...')
     setIsSubmitting(true)
     
     try {
+      console.log('Calling /api/subscribe with:', { ...emailForm, orgSlug })
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -92,6 +98,10 @@ export default function DemoFeedbackHub() {
       if (response.ok) {
         setEmailSubmitted(true)
         setEmailForm({ email: '', launchPartner: false })
+      } else {
+        const errorData = await response.text()
+        console.error('API error:', response.status, errorData)
+        alert(`Error: ${response.status} - ${errorData}`)
       }
     } catch (error) {
       console.error('Error subscribing:', error)

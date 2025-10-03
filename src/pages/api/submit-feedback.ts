@@ -66,8 +66,8 @@ ${other || 'Not provided'}
       
       try {
         await resend.emails.send({
-          from: 'AI4Love Feedback <onboarding@resend.dev>',
-          to: ['scott@ai4love.com', 'jason@ai4love.ca'],
+          from: 'AI4Love Feedback <feedback@ai4love.ca>',
+          to: ['scott@ai4love.ca', 'jason@ai4love.ca'],
           subject: `New Feedback from ${organization || 'Demo Page'}`,
           text: emailContent,
         })
