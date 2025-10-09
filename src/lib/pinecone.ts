@@ -4,12 +4,15 @@ let pineconeClient: Pinecone | null = null;
 
 export function getPineconeClient() {
   if (!pineconeClient) {
-    if (!process.env.PINECONE_API_KEY) {
+    const apiKey = process.env.PINECONE_API_KEY;
+    
+    if (!apiKey) {
+      console.error('PINECONE_API_KEY is not set. Available env vars:', Object.keys(process.env).filter(k => k.includes('PINECONE')));
       throw new Error('PINECONE_API_KEY is not set');
     }
     
     pineconeClient = new Pinecone({
-      apiKey: process.env.PINECONE_API_KEY,
+      apiKey: apiKey,
     });
   }
   
