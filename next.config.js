@@ -6,7 +6,13 @@ const nextConfig = {
   useFileSystemPublicRoutes: true,
   // Removed 'output: export' to enable API routes for feedback hub
   // Handle transpiling mapbox-gl module
-  transpilePackages: ['mapbox-gl']
+  transpilePackages: ['mapbox-gl'],
+  // Increase body size limit for file uploads
+  api: {
+    bodyParser: {
+      sizeLimit: '50mb',
+    },
+  },
 }
 
 module.exports = nextConfig

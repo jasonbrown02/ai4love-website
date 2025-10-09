@@ -2,5 +2,11 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "functions": {
+    "src/pages/api/rag/upload.ts": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  }
 }
