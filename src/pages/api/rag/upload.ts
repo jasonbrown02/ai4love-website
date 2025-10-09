@@ -5,9 +5,6 @@ import path from 'path';
 import { getPineconeIndex, chunkText, generateEmbedding, DocumentMetadata } from '@/lib/pinecone';
 import mammoth from 'mammoth';
 
-// pdf-parse is a CommonJS module
-const pdfParse = require('pdf-parse');
-
 export const config = {
   api: {
     bodyParser: false,
@@ -18,7 +15,9 @@ async function extractTextFromFile(filePath: string, mimeType: string): Promise<
   const buffer = fs.readFileSync(filePath);
   
   if (mimeType === 'application/pdf') {
-    const data = await pdfParse(buffer);
+    // Dynamically import pdf-parse for CommonJS compatibility
+    const pdfParse = await import('pdf-parse');
+    const data = await (pdfParse as any)(buffer);
     return data.text;
   } else if (mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
     const result = await mammoth.extractRawText({ buffer });

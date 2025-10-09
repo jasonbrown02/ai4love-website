@@ -4,7 +4,7 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "functions": {
-    "src/pages/api/rag/upload.ts": {
+    "api/rag/upload.js": {
       "maxDuration": 60,
       "memory": 1024
     }
