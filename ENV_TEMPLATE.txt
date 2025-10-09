@@ -1,0 +1,43 @@
+# RAG Manager Environment Variables
+# Copy these to your .env.local file and fill in your actual values
+
+# ============================================
+# PINECONE CONFIGURATION
+# ============================================
+# Get your API key from: https://app.pinecone.io/
+# 1. Sign up or log in to Pinecone
+# 2. Go to API Keys section
+# 3. Copy your API key
+PINECONE_API_KEY=pc-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Name of your Pinecone index
+# You can use your existing index: text-embedding-3-small
+# OR create a new index with these settings:
+# - Name: ai4love-rag
+# - Dimensions: 1536
+# - Metric: cosine
+PINECONE_INDEX_NAME=text-embedding-3-small
+
+# ============================================
+# OPENAI CONFIGURATION
+# ============================================
+# Get your API key from: https://platform.openai.com/api-keys
+# 1. Sign up or log in to OpenAI
+# 2. Go to API Keys section
+# 3. Create a new secret key
+# 4. Copy and save it (you won't see it again!)
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ============================================
+# SITE CONFIGURATION
+# ============================================
+# Your website's base URL (used for API endpoint generation)
+# Development: http://localhost:3000
+# Production: https://ai4love.com
+NEXT_PUBLIC_BASE_URL=https://ai4love.com
+
+# ============================================
+# OPTIONAL: EXISTING VARIABLES
+# ============================================
+# Keep any existing environment variables below this line
+# (e.g., RESEND_API_KEY, SUPABASE_URL, etc.)
