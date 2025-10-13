@@ -122,11 +122,9 @@ export default function DemoFeedbackHub() {
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold font-poppins mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
             {org.name ? (
-              <>Thank you, <br>
-              <span className="text-brand-red">{org.name}</span> team, <br>
-              for helping shape AI4Love</>
+              <>Thank you, <span className="text-brand-red">{org.name}</span> team, for helping shape AI4Love</>
             ) : (
               <>Thank you for helping shape AI4Love</>
             )}
@@ -342,7 +340,7 @@ export default function DemoFeedbackHub() {
           </h2>
           <p className="text-lg text-gray-300 font-poppins mb-6">
             We're building in the open with input from people like you. 
-            oin our early adopter community to get development updates, sneak peeks, and first access when we launch.
+            Join our early adopter community to get development updates, sneak peeks, and first access when we launch.
           </p>
           <p className="text-sm text-gray-400 font-poppins mb-6">
             You'll get updates roughly monthly—only when there's something worth sharing.
