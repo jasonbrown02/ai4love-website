@@ -122,9 +122,11 @@ export default function DemoFeedbackHub() {
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold font-poppins mb-4">
             {org.name ? (
-              <>Thank you, <span className="text-brand-red">{org.name}</span> team, for helping shape AI4Love</>
+              <>Thank you, <br>
+              <span className="text-brand-red">{org.name}</span> team, <br>
+              for helping shape AI4Love</>
             ) : (
               <>Thank you for helping shape AI4Love</>
             )}
