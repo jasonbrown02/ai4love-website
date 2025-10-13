@@ -340,8 +340,7 @@ export default function DemoFeedbackHub() {
           </h2>
           <p className="text-lg text-gray-300 font-poppins mb-6">
             We're building in the open with input from people like you. 
-            Join our early community to get development updates, 
-            sneak peeks, and first access when we launch.
+            oin our early adopter community to get development updates, sneak peeks, and first access when we launch.
           </p>
           <p className="text-sm text-gray-400 font-poppins mb-6">
             You'll get updates roughly monthly—only when there's something worth sharing.

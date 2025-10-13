@@ -77,7 +77,6 @@ export default function Layout({
                   <li>Insights Dashboard</li>
                   <li>Recognition Engine</li>
                   <li>Engagement Engine</li>
-                  <li>Language Engine</li>
                 </ul>
               </div>
               
