@@ -412,6 +412,23 @@ export default function DemoFeedbackHub() {
 
             <div className="p-6 bg-white rounded-lg border-2 border-gray-200 hover:border-brand-red transition-colors">
               <h3 className="text-xl font-semibold font-poppins mb-2 text-gray-900">
+                Nonprofit Tool Selector
+              </h3>
+              <p className="text-gray-600 mb-4 font-poppins">
+                Explore our interactive tool mapping to see how AI4Love connects with your existing systems
+              </p>
+              <a 
+                href="https://ai4love.ca/tools" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-brand-red hover:text-red-700 font-semibold font-poppins"
+              >
+                Explore Tools →
+              </a>
+            </div>
+
+            <div className="p-6 bg-white rounded-lg border-2 border-gray-200 hover:border-brand-red transition-colors">
+              <h3 className="text-xl font-semibold font-poppins mb-2 text-gray-900">
                 Contact Information
               </h3>
               <p className="text-gray-600 mb-2 font-poppins">
