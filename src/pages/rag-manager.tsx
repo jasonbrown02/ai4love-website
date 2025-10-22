@@ -203,8 +203,8 @@ export default function RAGManager() {
   return (
     <>
       <Head>
-        <title>RAG Manager - AI4Love</title>
-        <meta name="description" content="Manage your RAG data for AI4Love" />
+        <title>KindMind - AI4Love Sector Intelligence</title>
+        <meta name="description" content="KindMind: The sector intelligence knowledge base powering AI4Love's recommendations" />
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
@@ -217,10 +217,10 @@ export default function RAGManager() {
                 <img src="/logo/ai4love_blkred.svg" alt="AI4Love" className="h-10 w-auto" />
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                    RAG Manager
+                    KindMind
                   </h1>
                   <p className="text-sm text-gray-600 mt-1">
-                    Centralized document management for your AI knowledge base
+                    Sector Intelligence Knowledge Base — Latest nonprofit best practices powering all AI4Love recommendations
                   </p>
                 </div>
               </div>
@@ -316,10 +316,10 @@ export default function RAGManager() {
           {/* Query Section */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              Test Query
+              Test KindMind Query
             </h2>
             <p className="text-gray-600 mb-4">
-              Search your uploaded documents to test the RAG system.
+              Search the KindMind knowledge base to test sector intelligence retrieval.
             </p>
             
             <form onSubmit={handleQuery} className="space-y-4">
@@ -328,7 +328,7 @@ export default function RAGManager() {
                   type="text"
                   value={queryText}
                   onChange={(e) => setQueryText(e.target.value)}
-                  placeholder="Ask a question about your documents..."
+                  placeholder="Ask a question about nonprofit best practices..."
                   disabled={querying}
                   className="flex-1 px-4 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ec3b25]"
                 />
@@ -404,10 +404,10 @@ export default function RAGManager() {
           {/* Upload Section */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              Upload Document
+              Upload to KindMind
             </h2>
             <p className="text-gray-600 mb-4">
-              Upload PDF, Word documents, text files, or markdown files. The latest upload will be tagged as the current source of truth.
+              Upload research, best practices, and sector intelligence documents. The latest upload becomes the active knowledge source for AI4Love recommendations.
             </p>
             
             <div className="flex items-center space-x-4">
@@ -443,7 +443,7 @@ export default function RAGManager() {
           {/* Documents List */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              Document History
+              KindMind Knowledge Base
             </h2>
 
             {loading ? (
@@ -452,7 +452,7 @@ export default function RAGManager() {
               </div>
             ) : documents.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
-                No documents uploaded yet. Upload your first document above!
+                No documents in KindMind yet. Upload your first sector intelligence document above!
               </div>
             ) : (
               <div className="space-y-4">
