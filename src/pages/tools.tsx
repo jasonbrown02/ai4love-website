@@ -1,76 +1,10 @@
 import { useState } from 'react'
 import Layout from '@/components/Layout'
-
-interface Tool {
-  id: string
-  name: string
-  category: string
-  logo?: string
-}
-
-// Nonprofit tools with actual logo files
-const tools: Tool[] = [
-  // Fundraising & CRM
-  { id: 'salesforce', name: 'Salesforce Nonprofit Cloud', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/salesforce_nonprofit_cloud.jpeg' },
-  { id: 'donorperfect', name: 'DonorPerfect', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/donorperfect.png' },
-  { id: 'blackbaud', name: 'Blackbaud Raiser\'s Edge NXT', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/blackbaud_raisersedge_nxt_1.jpg' },
-  { id: 'neon', name: 'Neon One', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/neon_one.png' },
-  { id: 'bloomerang', name: 'Bloomerang', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/bloomerang.png' },
-  { id: 'virtuous', name: 'Virtuous', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/virtuous.png' },
-  { id: 'everyaction', name: 'EveryAction', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/everyaction.png' },
-  { id: 'canadahelps', name: 'CanadaHelps', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/canada_helps.png' },
-  { id: 'networkforgood', name: 'Network for Good', category: 'Fundraising & CRM', logo: '/platform-logos/Donor_&_Fundraising_CRMs/network_for_good.jpeg' },
-  
-  // Events & Peer-to-Peer
-  { id: 'eventbrite', name: 'Eventbrite', category: 'Events & Peer-to-Peer', logo: '/platform-logos/Event_Ticketing_&_Peer_to_Peer/eventbrite.png' },
-  { id: 'givebutter', name: 'Givebutter', category: 'Events & Peer-to-Peer', logo: '/platform-logos/Event_Ticketing_&_Peer_to_Peer/give_butter.png' },
-  { id: 'classy', name: 'Classy', category: 'Events & Peer-to-Peer', logo: '/platform-logos/Event_Ticketing_&_Peer_to_Peer/classy.jpg' },
-  { id: 'qgiv', name: 'Qgiv', category: 'Events & Peer-to-Peer', logo: '/platform-logos/Event_Ticketing_&_Peer_to_Peer/Qgiv.jpeg' },
-  { id: 'fundraise', name: 'Fundraise', category: 'Events & Peer-to-Peer', logo: '/platform-logos/Event_Ticketing_&_Peer_to_Peer/fundraise.png' },
-  { id: 'zeffy', name: 'Zeffy', category: 'Events & Peer-to-Peer', logo: '/platform-logos/Event_Ticketing_&_Peer_to_Peer/zeffy.png' },
-  { id: 'clover', name: 'Clover', category: 'Events & Peer-to-Peer', logo: '/platform-logos/Event_Ticketing_&_Peer_to_Peer/clover.png' },
-  
-  // Marketing & Communications
-  { id: 'mailchimp', name: 'Mailchimp', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/mailchimp.png' },
-  { id: 'constant-contact', name: 'Constant Contact', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/constant_contact.png' },
-  { id: 'wordpress', name: 'WordPress', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/wordpress.png' },
-  { id: 'squarespace', name: 'Squarespace', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/squarespace.png' },
-  { id: 'hubspot', name: 'HubSpot', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/hubspot.png' },
-  { id: 'keela', name: 'Keela', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/keela.png' },
-  { id: 'donorbox', name: 'Donorbox', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/donorbox.png' },
-  { id: 'wix', name: 'Wix', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/wix.png' },
-  { id: 'drupal', name: 'Drupal', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/drupal.png' },
-  { id: 'emma', name: 'Emma', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/emma.jpeg' },
-  { id: 'campaign-monitor', name: 'Campaign Monitor', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/campaign_monitor.png' },
-  { id: 'little-green-light', name: 'Little Green Light', category: 'Marketing & Communications', logo: '/platform-logos/Marketing_&_Communications/little-green-light.png' },
-  
-  // Productivity & Collaboration
-  { id: 'slack', name: 'Slack', category: 'Productivity & Collaboration', logo: '/platform-logos/Productivity_&_Collaboration/slack.jpeg' },
-  { id: 'microsoft-365', name: 'Microsoft 365', category: 'Productivity & Collaboration', logo: '/platform-logos/Productivity_&_Collaboration/microsoft_365.png' },
-  { id: 'google-workspace', name: 'Google Workspace', category: 'Productivity & Collaboration', logo: '/platform-logos/Productivity_&_Collaboration/google_workspace.png' },
-  { id: 'zoom', name: 'Zoom', category: 'Productivity & Collaboration', logo: '/platform-logos/Productivity_&_Collaboration/zoom.png' },
-  { id: 'dropbox', name: 'Dropbox', category: 'Productivity & Collaboration', logo: '/platform-logos/Productivity_&_Collaboration/dropbox.png' },
-  { id: 'sync', name: 'Sync', category: 'Productivity & Collaboration', logo: '/platform-logos/Productivity_&_Collaboration/sync.png' },
-  
-  // Finance & Operations
-  { id: 'quickbooks', name: 'QuickBooks', category: 'Finance & Operations', logo: '/platform-logos/Finance_&_Operations/intuit_quickbooks.png' },
-  { id: 'sage', name: 'Sage Intacct', category: 'Finance & Operations', logo: '/platform-logos/Finance_&_Operations/sage_intacct.png' },
-  { id: 'stripe', name: 'Stripe', category: 'Finance & Operations', logo: '/platform-logos/Finance_&_Operations/stripe.png' },
-  { id: 'square', name: 'Square', category: 'Finance & Operations', logo: '/platform-logos/Finance_&_Operations/square.png' },
-  { id: 'paypal', name: 'PayPal Giving Fund', category: 'Finance & Operations', logo: '/platform-logos/Finance_&_Operations/paypal_giving_fund.png' }
-]
-
-const categories = [
-  'Fundraising & CRM',
-  'Events & Peer-to-Peer',
-  'Marketing & Communications',
-  'Productivity & Collaboration',
-  'Finance & Operations'
-]
+import { tools, categories, type Tool } from '@/data/toolsData'
 
 export default function ToolsMapping() {
-  const title = "Which tools do you use? - AI4Love"
-  const description = "Discover how AI4Love connects your nonprofit's existing tools into one intelligent engagement layer."
+  const title = "Platform Coverage - AI4Love"
+  const description = "We work with your stack. Discover the comprehensive range of nonprofit and foundation platforms AI4Love integrates with."
   
   const [selectedTools, setSelectedTools] = useState<string[]>([])
   const [showConnections, setShowConnections] = useState(false)
@@ -97,7 +31,7 @@ export default function ToolsMapping() {
         key={tool.id}
         onClick={() => toggleTool(tool.id)}
         className={`
-          relative cursor-pointer rounded-xl border-2 p-6 transition-all duration-300 hover:scale-105
+          relative cursor-pointer rounded-xl border-2 p-4 transition-all duration-300 hover:scale-105
           ${isSelected 
             ? 'border-red-500 bg-red-50 shadow-lg' 
             : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
@@ -109,11 +43,11 @@ export default function ToolsMapping() {
         } : {}}
       >
         {/* Logo area */}
-        <div className="flex h-16 items-center justify-center mb-4 bg-white rounded-lg p-2">
+        <div className="flex h-16 items-center justify-center mb-3 bg-white rounded-lg p-2">
           {tool.logo ? (
             <img 
               src={tool.logo} 
-              alt={tool.name}
+              alt={`${tool.name} logo`}
               className="max-h-full max-w-full object-contain"
             />
           ) : (
@@ -122,6 +56,27 @@ export default function ToolsMapping() {
             </div>
           )}
         </div>
+        
+        {/* Tool name */}
+        <h3 className="text-sm font-semibold text-gray-800 text-center mb-2 font-poppins line-clamp-2">
+          {tool.name}
+        </h3>
+        
+        {/* Description */}
+        <p className="text-xs text-gray-600 text-center font-poppins leading-relaxed mb-3 line-clamp-3">
+          {tool.description}
+        </p>
+        
+        {/* Link to platform */}
+        <a
+          href={tool.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="block text-center text-xs font-medium text-red-500 hover:text-red-600 hover:underline font-poppins"
+        >
+          Visit Website →
+        </a>
         
         {isSelected && (
           <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
@@ -251,17 +206,17 @@ export default function ToolsMapping() {
   }
 
   return (
-    <Layout title={title} description={description} canonicalUrl="https://ai4love.com/tools-mapping">
+    <Layout title={title} description={description} canonicalUrl="https://ai4love.ca/tools">
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-6 py-12">
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4" style={{ color: '#ec3b25' }}>
-              Which tools do you use?
+              We Work With Your Stack
             </h1>
             <p className="text-lg md:text-xl text-gray-600 font-poppins max-w-3xl mx-auto leading-relaxed">
-              Click the logos below to highlight the tools your organization uses. 
-              At the bottom, you'll see a summary of your selections and how AI4Love can connect them.
+              AI4Love integrates with the platforms nonprofits and foundations already use. 
+              Click any tool to select it and see how we connect your systems into one intelligent engagement layer.
             </p>
           </div>
 

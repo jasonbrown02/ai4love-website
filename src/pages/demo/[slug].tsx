@@ -8,6 +8,10 @@ const orgData: Record<string, { name: string; sector: string }> = {
     name: 'Joseph Brant Hospital Foundation', 
     sector: 'Healthcare'
   },
+  'HHSF': { 
+    name: 'Hamilton Health Sciences Foundation', 
+    sector: 'Healthcare'
+  },
   // Add more organizations as needed
 }
 
