@@ -123,6 +123,12 @@ export default function FAQ() {
               <strong>Machine-First Context:</strong> This FAQ page uses structured schema markup to support <a href="/answer-engine-optimization" className="text-blue-600 hover:text-blue-800">Answer Engine Optimization (AEO)</a> and demonstrates the <a href="/machine-first-websites" className="text-blue-600 hover:text-blue-800">machine-first principles</a> we help nonprofits implement.
             </p>
           </div>
+
+          <div className="bg-gray-50 p-4 rounded-lg mb-8">
+            <p className="text-sm">
+              <strong>📚 Resource Hub:</strong> This page is part of our comprehensive <a href="/geo-resources" className="text-blue-600 hover:text-blue-800">GEO Resources Hub</a> with guides, checklists, and implementation tools for nonprofit AI optimization.
+            </p>
+          </div>
           
           <p className="text-xl text-gray-600 mb-8">
             Get answers to the most common questions about AI4Love's relationship intelligence platform and how it can transform your nonprofit's supporter engagement.

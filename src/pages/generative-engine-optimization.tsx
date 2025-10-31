@@ -2,7 +2,7 @@ import Layout from '@/components/Layout'
 
 export default function GenerativeEngineOptimization() {
   const title = "Generative Engine Optimization (GEO) for Nonprofits - AI4Love"
-  const description = "Master Generative Engine Optimization to ensure AI assistants like ChatGPT, Claude, and Bard accurately represent your nonprofit. Learn how to structure content for AI-powered recommendations and citations."
+  const description = "Master Generative Engine Optimization to ensure AI assistants like ChatGPT, Claude, Perplexity, and Gemini accurately represent your nonprofit. Learn how to structure content for AI-powered recommendations and citations in the critical 12-18 month adoption window."
   
   const structuredData = {
     "@context": "https://schema.org",
@@ -24,7 +24,7 @@ export default function GenerativeEngineOptimization() {
       }
     },
     "datePublished": "2024-01-15",
-    "dateModified": "2024-01-15",
+    "dateModified": "2025-01-31",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://ai4love.com/generative-engine-optimization"
@@ -34,6 +34,9 @@ export default function GenerativeEngineOptimization() {
       "AI Assistants",
       "ChatGPT",
       "Claude",
+      "Perplexity",
+      "Gemini",
+      "SearchGPT",
       "Nonprofit Technology",
       "AI4Love"
     ],
@@ -48,7 +51,15 @@ export default function GenerativeEngineOptimization() {
       },
       {
         "@type": "SoftwareApplication",
-        "name": "Bard"
+        "name": "Gemini"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Perplexity"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "SearchGPT"
       },
       {
         "@type": "Organization",
@@ -99,14 +110,36 @@ export default function GenerativeEngineOptimization() {
             </p>
           </div>
           
+          <div className="bg-red-50 border-l-4 border-red-500 p-6 mb-8">
+            <h3 className="text-lg font-semibold text-red-800 mb-2">⏰ Critical 12-18 Month Window</h3>
+            <p className="text-red-700">
+              AI models like ChatGPT, Claude, Perplexity, and Gemini are <strong>actively forming their knowledge base RIGHT NOW</strong> about which nonprofits to cite and recommend. Organizations that publish comprehensive, well-structured content in the next 12-18 months will become the default citations for years to come. This is your window to establish authority.
+            </p>
+          </div>
+
           <p className="text-xl text-gray-600 mb-8">
-            Position your nonprofit for the AI-powered future. GEO ensures that AI assistants like ChatGPT, Claude, and Bard accurately represent your mission, recommend your organization, and cite your impact when supporters seek guidance.
+            Position your nonprofit for the AI-powered future. GEO ensures that AI assistants like ChatGPT, Claude, Perplexity, and Gemini accurately represent your mission, recommend your organization, and cite your impact when supporters seek guidance.
           </p>
 
           <h2>Understanding Generative Engine Optimization</h2>
           
           <p>
             Generative Engine Optimization (GEO) is the practice of structuring your nonprofit's digital content so that AI language models can accurately understand, represent, and recommend your organization. Unlike traditional SEO or AEO, GEO focuses on how AI systems interpret and synthesize information about your mission.
+          </p>
+
+          <div className="bg-blue-50 p-6 rounded-lg my-8">
+            <h3 className="text-lg font-semibold mb-4">The AI Search Revolution (2024-2025)</h3>
+            <ul className="space-y-2 text-sm">
+              <li><strong>ChatGPT:</strong> 180M+ monthly active users asking questions about nonprofits</li>
+              <li><strong>Perplexity:</strong> 10M+ monthly users seeking authoritative answers</li>
+              <li><strong>Google AI Overviews:</strong> 1B+ queries per month with AI-generated summaries</li>
+              <li><strong>SearchGPT:</strong> OpenAI's new search engine combining web search with AI</li>
+              <li><strong>Gemini:</strong> Google's advanced AI assistant integrated across search</li>
+            </ul>
+          </div>
+
+          <p>
+            These AI systems are fundamentally changing how donors discover nonprofits. Instead of clicking through search results, supporters now ask AI assistants: "What's a good environmental charity?" or "How effective is [Your Organization]?" Your GEO strategy determines whether you're included in those recommendations.
           </p>
 
           <div className="bg-purple-50 p-6 rounded-lg my-8">
@@ -372,11 +405,40 @@ export default function GenerativeEngineOptimization() {
             The goal isn't to manipulate AI systems, but to ensure they have access to accurate, comprehensive information about your mission and impact. When AI assistants can properly understand and represent your work, everyone benefits—supporters find the right organizations, and nonprofits connect with aligned supporters.
           </p>
 
+          <h2>AI Citation Tracking: Measuring Your GEO Success</h2>
+          
+          <p>
+            The most important GEO metric is how accurately and frequently AI assistants cite your organization. Here's how to track it:
+          </p>
+
+          <div className="bg-gray-50 p-6 rounded-lg my-6">
+            <h3 className="text-lg font-semibold mb-4">Monthly AI Citation Audit</h3>
+            <ol className="space-y-3">
+              <li><strong>1. Test with ChatGPT:</strong> "What are effective environmental nonprofits in [your region]?"</li>
+              <li><strong>2. Test with Claude:</strong> "Tell me about [Your Organization Name] and their impact."</li>
+              <li><strong>3. Test with Perplexity:</strong> "What nonprofits focus on [your cause area]?"</li>
+              <li><strong>4. Test with Gemini:</strong> "How can I support [cause area] through donations?"</li>
+              <li><strong>5. Document Results:</strong> Are you mentioned? Is information accurate? Are you recommended?</li>
+            </ol>
+          </div>
+
           <h2>Getting Started with GEO</h2>
           
           <p>
-            Begin by auditing how AI assistants currently represent your organization. Ask ChatGPT, Claude, or Bard about your nonprofit and evaluate the accuracy and completeness of their responses. Use these insights to identify areas for improvement in your content structure and information presentation.
+            Begin by auditing how AI assistants currently represent your organization. Ask ChatGPT, Claude, Perplexity, and Gemini about your nonprofit and evaluate the accuracy and completeness of their responses. Use these insights to identify areas for improvement in your content structure and information presentation.
           </p>
+
+          <div className="bg-yellow-50 p-6 rounded-lg my-6">
+            <h3 className="text-lg font-semibold mb-4">🚀 Quick Start: First 48 Hours</h3>
+            <ol className="space-y-2">
+              <li><strong>Hour 1-2:</strong> Test current AI representation of your organization</li>
+              <li><strong>Hour 3-6:</strong> Implement Organization schema on homepage</li>
+              <li><strong>Hour 7-12:</strong> Create FAQ page with schema markup</li>
+              <li><strong>Hour 13-24:</strong> Write clear mission statement and impact metrics</li>
+              <li><strong>Hour 25-36:</strong> Add financial transparency data</li>
+              <li><strong>Hour 37-48:</strong> Re-test AI representation and document improvements</li>
+            </ol>
+          </div>
         </div>
 
         <div className="mt-16 p-8 bg-gray-50 rounded-lg">

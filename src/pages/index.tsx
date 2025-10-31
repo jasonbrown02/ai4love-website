@@ -183,6 +183,24 @@ export default function Home() {
   const title = "AI4Love - Relationship Intelligence for Nonprofits"
   const description = "AI-powered relationship intelligence platform for nonprofits. Transform supporter data into actionable insights without replacing existing systems."
   
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AI4Love",
+    "description": "AI-powered relationship intelligence platform for nonprofits. Transform supporter data into actionable insights without replacing existing systems.",
+    "url": "https://ai4love.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ai4love.com/logo.svg"
+    },
+    "foundingDate": "2023",
+    "applicationCategory": "Nonprofit Technology",
+    "offers": {
+      "@type": "Offer",
+      "description": "Relationship intelligence platform for nonprofits"
+    }
+  }
+  
   const [registrationNumber, setRegistrationNumber] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [orgName, setOrgName] = useState('')
@@ -575,6 +593,10 @@ export default function Home() {
 
   return (
     <HomeLayout title={title} description={description} canonicalUrl="https://ai4love.com">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       {/* Red background with heart animation */}
       <div className="fixed inset-0" style={{ backgroundColor: '#ec3b25' }}>
         {/* Animation container */}

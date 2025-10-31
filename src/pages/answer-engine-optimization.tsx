@@ -2,7 +2,7 @@ import Layout from '@/components/Layout'
 
 export default function AnswerEngineOptimization() {
   const title = "Answer Engine Optimization (AEO) for Nonprofits - AI4Love"
-  const description = "Master Answer Engine Optimization to help donors and volunteers find your nonprofit through featured snippets, voice search, and AI-powered answer engines. Practical AEO strategies for mission-driven organizations."
+  const description = "Master Answer Engine Optimization to help donors and volunteers find your nonprofit through featured snippets, voice search, and AI-powered answer engines like Perplexity and Google AI Overviews. Practical AEO strategies for mission-driven organizations."
   
   const structuredData = {
     "@context": "https://schema.org",
@@ -19,10 +19,14 @@ export default function AnswerEngineOptimization() {
           "@type": "Organization",
           "name": "AI4Love"
         },
+        "datePublished": "2024-01-15",
+        "dateModified": "2025-01-31",
         "about": [
           "Answer Engine Optimization",
           "Featured Snippets",
           "Voice Search",
+          "Zero-Click Search",
+          "AI Overviews",
           "Nonprofit Marketing",
           "AI4Love"
         ],
@@ -106,14 +110,37 @@ export default function AnswerEngineOptimization() {
           </div>
           
           <p className="text-xl text-gray-600 mb-8">
-            Transform how donors and volunteers discover your nonprofit by optimizing for direct answers. AEO ensures your mission-critical information appears in featured snippets, voice search results, and AI-powered answer engines.
+            Transform how donors and volunteers discover your nonprofit by optimizing for direct answers. AEO ensures your mission-critical information appears in featured snippets, voice search results, and AI-powered answer engines like Perplexity, Google AI Overviews, and SearchGPT.
           </p>
+
+          <div className="bg-green-50 p-6 rounded-lg my-8">
+            <h3 className="text-lg font-semibold mb-4">Voice Search & Answer Engine Statistics (2024-2025)</h3>
+            <ul className="space-y-2 text-sm">
+              <li><strong>50% of all searches</strong> will be voice-based by 2025</li>
+              <li><strong>72% of voice search users</strong> use AI assistants daily</li>
+              <li><strong>Featured snippets receive 35%</strong> of all clicks</li>
+              <li><strong>FAQ schema increases</strong> featured snippet probability by 40%</li>
+              <li><strong>Voice search queries are 3x longer</strong> than text queries</li>
+              <li><strong>Zero-click searches</strong> now account for 25% of all Google searches</li>
+            </ul>
+          </div>
 
           <h2>Understanding Answer Engine Optimization</h2>
           
           <p>
-            Answer Engine Optimization (AEO) represents a fundamental shift from traditional search optimization. Instead of competing for clicks, nonprofits must now compete to be the authoritative answer to supporter questions.
+            Answer Engine Optimization (AEO) represents a fundamental shift from traditional search optimization. Instead of competing for clicks, nonprofits must now compete to be the authoritative answer to supporter questions. With the rise of AI-powered answer engines like Perplexity, Google AI Overviews, and SearchGPT, your content must be structured to provide immediate, accurate answers.
           </p>
+
+          <div className="bg-purple-50 p-6 rounded-lg my-8">
+            <h3 className="text-lg font-semibold mb-4">The Answer Engine Landscape (2025)</h3>
+            <ul className="space-y-2">
+              <li><strong>Google AI Overviews:</strong> AI-generated summaries at top of search results</li>
+              <li><strong>Perplexity:</strong> AI-powered answer engine with source citations</li>
+              <li><strong>SearchGPT:</strong> OpenAI's search engine with conversational answers</li>
+              <li><strong>Featured Snippets:</strong> Traditional answer boxes in search results</li>
+              <li><strong>Voice Assistants:</strong> Siri, Alexa, Google Assistant providing spoken answers</li>
+            </ul>
+          </div>
 
           <div className="bg-blue-50 p-6 rounded-lg my-8">
             <h3 className="text-lg font-semibold mb-4">The AEO Advantage for Nonprofits</h3>
@@ -248,6 +275,23 @@ export default function AnswerEngineOptimization() {
             Always provide context for your answers and cite credible sources when possible. This builds trust and authority.
           </p>
 
+          <h2>Zero-Click Search Optimization</h2>
+          
+          <p>
+            Zero-click searches occur when users get their answer directly from the search results page without clicking through to a website. While this might seem counterproductive, appearing in zero-click results builds massive brand awareness and authority.
+          </p>
+
+          <div className="bg-orange-50 p-6 rounded-lg my-8">
+            <h3 className="text-lg font-semibold mb-4">Optimizing for Zero-Click Success</h3>
+            <ul className="space-y-2">
+              <li><strong>Brand Visibility:</strong> Your organization name appears in featured snippets and AI overviews</li>
+              <li><strong>Authority Building:</strong> Being "the answer" establishes you as the expert</li>
+              <li><strong>Follow-Up Queries:</strong> Users who see your answer often search specifically for your organization</li>
+              <li><strong>Voice Search Dominance:</strong> Voice assistants read your answer aloud, mentioning your organization</li>
+              <li><strong>Trust Signals:</strong> Appearing in answer positions signals credibility to potential donors</li>
+            </ul>
+          </div>
+
           <h2>Measuring AEO Success</h2>
 
           <div className="bg-yellow-50 p-6 rounded-lg my-8">
@@ -255,9 +299,11 @@ export default function AnswerEngineOptimization() {
             <ul className="space-y-2">
               <li><strong>Featured Snippet Captures:</strong> Track questions where you appear as the featured answer</li>
               <li><strong>Voice Search Rankings:</strong> Monitor rankings for voice-based nonprofit queries</li>
-              <li><strong>Zero-Click Traffic:</strong> Measure brand awareness from answer appearances</li>
+              <li><strong>Zero-Click Impressions:</strong> Measure brand awareness from answer appearances</li>
+              <li><strong>AI Overview Citations:</strong> Track mentions in Google AI Overviews and Perplexity</li>
               <li><strong>FAQ Page Performance:</strong> Track engagement with structured Q&A content</li>
               <li><strong>Answer Box CTR:</strong> Click-through rates from featured snippets to your site</li>
+              <li><strong>Voice Search Traffic:</strong> Monitor traffic from voice-activated searches</li>
             </ul>
           </div>
 
